@@ -29,11 +29,13 @@ Route::get('/', function () {
 Route::middleware(['auth'])->group(function () {
 
         // Dashboard
-    Route::get('admin/dashboard', [AdminDashboardController::class, 'index'])
+        Route::get('admin/dashboard', [AdminDashboardController::class, 'index'])
         ->name('admin.dashboard');
         // ->middleware('role:admin');
-    Route::get('kasir/dashboard', [KasirDashboardController::class, 'index'])
+        Route::get('kasir/dashboard', [KasirDashboardController::class, 'index'])
         ->name('kasir.dashboard');
+        Route::post('kasir/dashboard', [KasirDashboardController::class, 'store'])
+        ->name('dashboard.store');
         // ->middleware('role:karyawan');
 
         //Transaksi
@@ -131,6 +133,3 @@ require __DIR__.'/auth.php';
 //     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
 //     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 // });
-        
-    
-

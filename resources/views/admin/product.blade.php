@@ -31,7 +31,7 @@
             </div>
 
             <div class="mb-3" style="max-width: 300px;">
-                <label for="categoryFilter">Filter Kategori:</label>
+                <label for="categoryFilter">Kategori Produk:</label>
                 <select id="categoryFilter" class="form-control">
                     <option value="">Semua Kategori</option>
                     <option value="Burger">Burger</option>
