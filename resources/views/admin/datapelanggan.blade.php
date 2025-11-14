@@ -13,7 +13,7 @@
                 <thead class="table-primary text-center">
                     <tr>
                         <th scope="col" width="5%">No</th>
-                        <th scope="col" width="10%">Nama Pelanggan</th>
+                        <th scope="col" width="10%">Nama Pelanggannn</th>
                         <th scope="col" width="15%">Alamat</th>
                         <th scope="col" width="10%">No Telepon</th>
                     </tr>
