@@ -1,0 +1,298 @@
+@extends('layouts.admin')
+
+@section('title', 'Manajemen Barang')
+
+@section('content')
+<div class="container-fluid pt-3">
+    <h3>Manajemen Barang & Supplier</h3>
+    <hr>
+
+    {{-- Notifikasi --}}
+    @if(session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('success') }}
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+        </div>
+    @elseif(session('error'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ session('error') }}
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+        </div>
+    @endif
+
+    {{-- Tabs --}}
+    <ul class="nav nav-tabs" id="barangSupplierTab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" style="width: 110px; text-align: center;" id="barang-tab" data-toggle="tab" href="#barang" role="tab">Barang</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" style="width: 110px; text-align: center;" id="supplier-tab" data-toggle="tab" href="#supplier" role="tab">Supplier</a>
+        </li>
+    </ul>
+
+    {{-- Tab Content --}}
+    <div class="tab-content mt-3" id="barangSupplierTabContent">
+
+        {{-- Barang Tab --}}
+        <div class="tab-pane fade show active" id="barang" role="tabpanel">
+            <div class="card shadow-sm rounded">
+                <div class="card-body">
+                    <div class="mb-3" style="max-width: 300px;">
+                        <input type="text" id="searchBarang" class="form-control" placeholder="Cari nama barang...">
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-bordered" style="table-layout: fixed;">
+                            <thead class="table-primary">
+                                <tr>
+                                    <th style="width: 5%; text-align: center;">No</th>
+                                    <th style="width: 20%;">Nama Barang</th>
+                                    <th style="width: 13%; text-align: center;">Harga / kg</th>
+                                    <th style="width: 10%; text-align: center;">Qty</th>
+                                    <th style="width: 20%;">Detail</th>
+                                    <th style="width: 18%;">Supplier</th>
+                                    <th style="text-align: center;">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @php $no = 1; @endphp
+                                @forelse($barangs as $barang)
+                                <tr>
+                                    <td style="text-align: center;">{{ $no }}</td>
+                                    <td>{{ $barang->nama_barang }}</td>
+                                    <td style="text-align: center;">Rp{{ number_format($barang->harga_per_kg,0,',','.') }}</td>
+                                    <td style="text-align: center;">{{ $barang->qty }}Kg</td>
+                                    <td>{{ $barang->detail_barang }}</td>
+                                    <td>{{ $barang->supplier->nama_supplier ?? '-' }}</td>
+                                    <td class="text-center">
+                                        <button class="btn btn-sm btn-info" data-toggle="modal" data-target="#detailBarangModal{{ $barang->id }}">Detail</button>
+                                    </td>
+                                </tr>
+                                @php $no++; @endphp
+                                @empty
+                                <tr>
+                                    <td colspan="7" class="text-center">Belum ada data barang.</td>
+                                </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                        {{ $barangs->links() }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{-- Supplier Tab --}}
+        <div class="tab-pane fade" id="supplier" role="tabpanel">
+            <div class="card shadow-sm rounded">
+                <div class="card-body">
+                    <button class="btn btn-success mb-3" data-toggle="modal" data-target="#createSupplierModal">+ Tambah Supplier</button>
+                    <div class="table-responsive" style="overflow-x: auto;">
+                        <table class="table table-bordered" style="min-width: 1200px; table-layout: fixed;">
+                            <thead class="table-primary">
+                                <tr>
+                                    <th style="width: 5%; text-align:center;">No</th>
+                                    <th style="width: 15%;">Nama Supplier</th>
+                                    <th style="width: 15%;">Nama PIC</th>
+                                    <th style="width: 16%;">Email</th>
+                                    <th style="width: 13%;">No. Telp</th>
+                                    <th style="width: 15%;">Alamat</th>
+                                    <th style="width: 13%;">Keterangan</th>
+                                    <th style="width: 15%; text-align:center;">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @php $noSupplier = 1; @endphp
+                                @forelse($suppliers as $supplier)
+                                <tr>
+                                    <td style="text-align:center;">{{ $noSupplier }}</td>
+                                    <td>{{ $supplier->nama_supplier }}</td>
+                                    <td>{{ $supplier->nama_pic }}</td>
+                                    <td>{{ $supplier->email }}</td>
+                                    <td>{{ $supplier->no_telp }}</td>
+                                    <td>{{ $supplier->alamat }}</td>
+                                    <td>{{ $supplier->keterangan }}</td>
+                                    <td class="text-center">
+                                        <button class="btn btn-sm btn-warning" data-toggle="modal" data-target="#editSupplierModal{{ $supplier->id }}">Edit</button>
+                                        <form action="{{ route('inventory.destroy', $supplier->id) }}" method="POST" style="display:inline-block;">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button class="btn btn-sm btn-danger" onclick="return confirm('Apakah Yakin ingin menghapus?')">Hapus</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                @php $noSupplier++; @endphp
+                                @empty
+                                <tr>
+                                    <td colspan="9" class="text-center">Belum ada data supplier.</td>
+                                </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                        {{ $suppliers->links() }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{-- Modal Detail Barang --}}
+@foreach($barangs as $barang)
+<div class="modal fade" id="detailBarangModal{{ $barang->id }}" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Detail Barang</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p><strong>Nama Barang:</strong> {{ $barang->nama_barang }}</p>
+                <p><strong>Harga / kg:</strong> Rp{{ number_format($barang->harga_per_kg,0,',','.') }}</p>
+                <p><strong>Qty:</strong> {{ $barang->qty }}Kg </p>
+                <p><strong>Detail:</strong> {{ $barang->detail_barang }}</p>
+                <hr>
+                <p><strong>Supplier:</strong> {{ $barang->supplier->nama_supplier ?? '-' }}</p>
+                <p><strong>PIC:</strong> {{ $barang->supplier->nama_pic ?? '-' }}</p>
+                <p><strong>Email:</strong> {{ $barang->supplier->email ?? '-' }}</p>
+                <p><strong>No. Telp:</strong> {{ $barang->supplier->no_telp ?? '-' }}</p>
+                <p><strong>Alamat:</strong> {{ $barang->supplier->alamat ?? '-' }}</p>
+                <p><strong>Keterangan:</strong> {{ $barang->supplier->keterangan ?? '-' }}</p>
+                <hr>
+                <p><strong>Di-Input:</strong> {{ $barang->supplier?->created_at?->timezone('Asia/Jakarta')->format('d F Y H:i:s') ?? '-' }}</p>
+                <p><strong>Diubah:</strong> {{ $barang->supplier?->updated_at?->timezone('Asia/Jakarta')->format('d F Y H:i:s') ?? '-' }}</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+            </div>
+        </div>
+    </div>
+</div>
+@endforeach
+
+{{-- Modal Edit Supplier & Barang --}}
+@foreach($suppliers as $supplier)
+<div class="modal fade" id="editSupplierModal{{ $supplier->id }}" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <form action="{{ route('inventory.update', $supplier->id) }}" method="POST">
+            @csrf
+            @method('PUT')
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Supplier & Barang</h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    {{-- Data Supplier --}}
+                    <div class="form-group"><input type="text" name="nama_supplier" class="form-control" value="{{ $supplier->nama_supplier }}" required></div>
+                    <div class="form-group"><input type="text" name="nama_pic" class="form-control" value="{{ $supplier->nama_pic }}"></div>
+                    <div class="form-group"><input type="email" name="email" class="form-control" value="{{ $supplier->email }}"></div>
+                    <div class="form-group"><input type="text" name="no_telp" class="form-control" value="{{ $supplier->no_telp }}"></div>
+                    <div class="form-group"><textarea name="alamat" class="form-control">{{ $supplier->alamat }}</textarea></div>
+                    <div class="form-group"><textarea name="keterangan" class="form-control">{{ $supplier->keterangan }}</textarea></div>
+
+                    <hr>
+
+                    {{-- Barang --}}
+                    <div class="barang-wrapper">
+                        @foreach($supplier->barangs as $barang)
+                        <div class="barang-item mb-2">
+                            <div class="row">
+                                <div class="col"><input type="text" name="barang[nama_barang][]" class="form-control" value="{{ $barang->nama_barang }}" required></div>
+                                <div class="col"><input type="number" name="barang[harga_per_kg][]" class="form-control" value="{{ $barang->harga_per_kg }}" required></div>
+                                <div class="col"><input type="number" name="barang[qty][]" class="form-control" value="{{ $barang->qty }}" required></div>
+                                <div class="col"><input type="text" name="barang[detail_barang][]" class="form-control" value="{{ $barang->detail_barang }}"></div>
+                                <div class="col-auto"><button type="button" class="btn btn-danger btn-sm remove-barang">X</button></div>
+                            </div>
+                        </div>
+                        @endforeach
+                    </div>
+                    <button type="button" class="btn btn-primary btn-sm addBarangBtn">+ Tambah Barang</button>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Update</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+@endforeach
+
+{{-- Modal Tambah Supplier & Barang --}}
+<div class="modal fade" id="createSupplierModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <form action="{{ route('inventory.store') }}" method="POST">
+            @csrf
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Tambah Supplier & Barang</h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <h5>Data Supplier</h5>
+                    <div class="form-group"><input type="text" name="nama_supplier" class="form-control" placeholder="Nama Supplier" required></div>
+                    <div class="form-group"><input type="text" name="nama_pic" class="form-control" placeholder="Nama PIC"></div>
+                    <div class="form-group"><input type="email" name="email" class="form-control" placeholder="Email"></div>
+                    <div class="form-group"><input type="text" name="no_telp" class="form-control" placeholder="No Telepon"></div>
+                    <div class="form-group"><textarea name="alamat" class="form-control" placeholder="Alamat"></textarea></div>
+                    <div class="form-group"><textarea name="keterangan" class="form-control" placeholder="Keterangan"></textarea></div>
+                    <hr>
+                    <h5>Barang Supplier</h5>
+                    <div class="barang-wrapper">
+                        <div class="barang-item mb-2">
+                            <div class="row">
+                                <div class="col"><input type="text" name="barang[nama_barang][]" class="form-control" placeholder="Nama Barang" required></div>
+                                <div class="col"><input type="number" name="barang[harga_per_kg][]" class="form-control" placeholder="Harga/kg" required></div>
+                                <div class="col"><input type="number" name="barang[qty][]" class="form-control" placeholder="Qty ( Kg )" required></div>
+                                <div class="col"><input type="text" name="barang[detail_barang][]" class="form-control" placeholder="Detail Barang"></div>
+                                <div class="col-auto"><button type="button" class="btn btn-danger btn-sm remove-barang">X</button></div>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-primary btn-sm" id="addBarangBtn">+ Tambah Barang</button>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-success" type="submit">Simpan</button>
+                    <button class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+@endsection
+
+@section('js')
+<script>
+$(document).ready(function() {
+    // Fade alert
+    $(".alert").fadeTo(3000, 500).slideUp(500, function(){ $(this).remove(); });
+
+    // Live search barang
+    $("#searchBarang").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#barang tbody tr").filter(function() {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+        });
+    });
+
+    // Tambah barang dinamis (modal tambah & edit)
+    $(document).on("click", "#addBarangBtn, .addBarangBtn", function() {
+        var html = `<div class="barang-item mb-2">
+            <div class="row">
+                <div class="col"><input type="text" name="barang[nama_barang][]" class="form-control" placeholder="Nama Barang" required></div>
+                <div class="col"><input type="number" name="barang[harga_per_kg][]" class="form-control" placeholder="Harga/kg" required></div>
+                <div class="col"><input type="number" name="barang[qty][]" class="form-control" placeholder="Qty" required></div>
+                <div class="col"><input type="text" name="barang[detail_barang][]" class="form-control" placeholder="Detail Barang"></div>
+                <div class="col-auto"><button type="button" class="btn btn-danger btn-sm remove-barang">X</button></div>
+            </div>
+        </div>`;
+        $(this).closest(".modal-body").find(".barang-wrapper").append(html);
+    });
+
+    // Hapus barang dinamis
+    $(document).on("click", ".remove-barang", function() {
+        $(this).closest(".barang-item").remove();
+    });
+});
+</script>
+@endsection
