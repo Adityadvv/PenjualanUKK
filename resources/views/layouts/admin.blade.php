@@ -58,9 +58,9 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('transaksi.index') }}" class="nav-link {{ request()->routeIs('transaksi.index') ? 'active' : '' }}">
+                        <a href="{{ route('admin.detailtransaksi') }}" class="nav-link {{ request()->routeIs('admin.detailtransaksi') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-tachometer-alt"></i>
-                            <p>Transaksi</p>
+                            <p>Detail Transaksi</p>
                         </a>
                     </li>
                     <li class="nav-item">

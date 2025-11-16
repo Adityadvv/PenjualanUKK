@@ -58,9 +58,9 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="">
+                        <a href="{{ route('kasir.listorder') }}" class="nav-link {{ request()->routeIs('kasir.listorder') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-tachometer-alt"></i>
-                            <p>Order</p>
+                            <p>List Order</p>
                         </a>
                     </li>
                 </ul>

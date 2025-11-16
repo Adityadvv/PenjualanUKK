@@ -1,11 +1,12 @@
 <?php
 
 use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\Admin\TransaksiController;
+use App\Http\Controllers\Admin\DetailTransaksiController;
 use App\Http\Controllers\Admin\DataPelangganController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\InventoryController;
 use App\Http\Controllers\Admin\SettingController;
+use App\Http\Controllers\Kasir\ListOrderController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -38,9 +39,18 @@ Route::middleware(['auth'])->group(function () {
         ->name('dashboard.store');
         // ->middleware('role:karyawan');
 
+        //ListOrder
+        Route::get('kasir/listorder', [ListOrderController::class, 'index'])
+        ->name('kasir.listorder');
+        Route::get('/listorder/{id}', [ListOrderController::class, 'show'])
+        ->name('kasir.listorder.show');
+        Route::post('/listorder/{id}/bayar', [ListOrderController::class, 'bayar'])
+        ->name('kasir.listorder.bayar');
+        // ->middleware('role:karyawan');
+
         //Transaksi
-        Route::get('admin/transaksi', [TransaksiController::class, 'index'])
-        ->name('transaksi.index');
+        Route::get('admin/detailtransaksi', [DetailTransaksiController::class, 'index'])
+        ->name('admin.detailtransaksi');
         // ->middleware('role:admin');
 
         //Data Pelanggan

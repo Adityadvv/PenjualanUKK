@@ -7,13 +7,13 @@
     <div class="container-fluid pt-3">
         <div class="row">
 
-            {{-- Bagian Kiri: Kategori dan Produk --}}
+            {{--Kategori dan Produk --}}
             <div class="col-md-8 d-flex flex-column" style="height: 80vh;">
                 {{-- Card Kategori --}}
                 <div class="card mb-3 p-3 shadow-sm">
                     <h5 class="mb-3">Menu Category</h5>
                     <div class="d-flex flex-wrap gap-2">
-                        <button class="btn btn-outline-secondary btn-sm category-btn" data-category="">Semua Produk</button>
+                        <button class="btn btn-outline-primary btn-sm category-btn" data-category="">Semua Menu</button>
                         @foreach ($categories as $category)
                             <button class="btn btn-outline-primary btn-sm category-btn" data-category="{{ $category }}">{{ $category }}</button>
                         @endforeach
@@ -46,51 +46,113 @@
 
             {{-- Bagian Kanan: Customer + Order Menu --}}
             <div class="col-md-4 d-flex flex-column" style="height: 80vh;">
-                <div class="card shadow-sm p-3 d-flex flex-column" style="border-radius: 15px; background-color: #ffffff; min-height: 90vh;">
-                    
+                <div class="card shadow-sm p-3 d-flex flex-column" 
+                    style="border-radius: 15px; background-color: #ffffff; width: 450px; min-height: 90vh;">
+
                     {{-- Bagian Customer --}}
-                    <div class="flex-grow-0 mb-3">
+                    <div class="flex-shrink-0 mb-3">
                         <h5 class="mb-3 text-primary fw-bold">🧍‍♂️ Data Customer</h5>
                         <form id="customerForm" action="{{ route('dashboard.store') }}" method="POST">
                             @csrf
-                            <div class="form-group mb-3">
-                                <label class="fw-semibold">Nama Pelanggan</label>
-                                <input type="text" name="namapelanggan" class="form-control" placeholder="Masukkan nama pelanggan" style="border-radius: 10px;" required>
+                            {{-- Data Customer --}}
+                            <div class="row g-2 mb-3 align-items-center">
+                                <div class="col-md-4"><label class="fw-semibold">Nama Customer</label></div>
+                                <div class="col-md-8"><input type="text" name="namapelanggan" class="form-control" placeholder="Masukkan nama pelanggan" style="height: 38px;" required></div>
+                            </div>
+                            <div class="row g-2 mb-3 align-items-center">
+                                <div class="col-md-4"><label class="fw-semibold">Alamat</label></div>
+                                <div class="col-md-8"><input type="text" name="alamat" class="form-control" placeholder="Masukkan alamat" style="height: 38px;" required></div>
+                            </div>
+                            <div class="row g-2 mb-3 align-items-center">
+                                <div class="col-md-4"><label class="fw-semibold">No Telepon</label></div>
+                                <div class="col-md-8"><input type="number" name="no_telepon" class="form-control" placeholder="Masukkan nomor telepon" style="height: 38px;" required></div>
                             </div>
 
-                            <div class="form-group mb-3">
-                                <label class="fw-semibold">Alamat</label>
-                                <textarea name="alamat" class="form-control" rows="2" placeholder="Masukkan alamat" style="border-radius: 10px;"></textarea>
+                            {{-- Tipe Pesanan --}}
+                            <div class="row g-2 mb-3 align-items-center">
+                                <div class="col-md-4"><label class="fw-semibold">Tipe Pesanan</label></div>
+                                <div class="col-md-8 d-flex gap-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="tipe_pesanan" id="dineIn" value="dine_in" required>
+                                        <label class="form-check-label" for="dineIn">Dine In</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="tipe_pesanan" id="takeAway" value="take_away" required>
+                                        <label class="form-check-label" for="takeAway">Take Away</label>
+                                    </div>
+                                </div>
                             </div>
 
-                            <div class="form-group mb-3">
-                                <label class="fw-semibold">No Telepon</label>
-                                <input type="text" name="no_telepon" class="form-control" placeholder="Masukkan nomor telepon" style="border-radius: 10px;">
+                            {{-- Nomor Meja --}}
+                            <div class="row g-2 mb-3 align-items-center">
+                                <div class="col-md-4"><label class="fw-semibold">Nomor Meja</label></div>
+                                <div class="col-md-8">
+                                    <select name="nomor_meja" id="nomorMejaInput" class="form-select" style="height: 38px; width: 100%;">
+                                        @for ($i = 1; $i <= 20; $i++)
+                                            <option value="{{ $i }}">Meja {{ $i }}</option>
+                                        @endfor
+                                    </select>
+                                </div>
                             </div>
+
+                            {{-- Metode Pembayaran --}}
+                            <div class="row g-2 mb-3 align-items-center">
+                                <div class="col-md-4"><label class="fw-semibold">Metode Pembayaran</label></div>
+                                <div class="col-md-8 d-flex gap-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="metode_pembayaran" id="cash" value="cash" required>
+                                        <label class="form-check-label" for="cash">Cash</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="metode_pembayaran" id="qris" value="qris" required>
+                                        <label class="form-check-label" for="qris">QRIS</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {{-- Input hidden order_data akan dibuat otomatis lewat JS --}}
                         </form>
                     </div>
 
-                    <hr>
+                    <hr class="my-2">
 
-                    {{-- Bagian Order Menu (scrollable) --}}
-                    <div class="flex-grow-1 mb-3" style="overflow-y: auto; scrollbar-width: none; -ms-overflow-style: none;">
-                        <h5 class="mb-3 text-primary fw-bold">🧾 Order Menu</h5>
-                        <ul class="list-group mb-0" id="orderList">
-                            {{-- Daftar order akan muncul di sini --}}
+                    {{-- Bagian Order Menu --}}
+                    <div class="d-flex flex-column flex-grow-1" style="min-height:0;">
+                        {{-- Judul Order Menu (tetap) --}}
+                        <h5 class="mb-3 text-primary fw-bold d-flex justify-content-between align-items-center flex-shrink-0">
+                            🧾 Order Menu
+                            <span id="menuCount" class="badge bg-primary" style="font-size: 13px;">0 Menu</span>
+                        </h5>
+
+                        {{-- List order scrollable --}}
+                        <ul id="orderList" class="list-group flex-grow-1 mb-3" 
+                            style="overflow-y:auto; min-height:0; max-height: 250px; scrollbar-width: none; -ms-overflow-style: none;">
+                            {{-- Daftar order muncul di sini --}}
                         </ul>
-                    </div>
 
-                    {{-- Bagian Total + Tombol Order --}}
-                    <div class="flex-grow-0">
-                        <div class="d-flex justify-content-between mb-3">
-                            <strong>Total:</strong>
-                            <strong id="totalPrice" data-total="0">Rp 0</strong>
+                        {{-- Total + Tombol Order --}}
+                        <div class="flex-shrink-0">
+                            <div class="mb-2 d-flex justify-content-between">
+                                <strong>Total Item:</strong>
+                                <span id="totalItemCount">0</span>
+                            </div>
+                            <div class="mb-3 d-flex justify-content-between">
+                                <strong>Total Harga:</strong>
+                                <strong id="totalPrice" data-total="0">Rp 0</strong>
+                            </div>
+
+                            {{-- Metode Pembayaran (Cash / QRIS) --}}
+                            <div class="mb-3 d-flex gap-2">
+                                <button type="button" class="btn btn-outline-success flex-grow-1">Cash</button>
+                                <button type="button" class="btn btn-outline-primary flex-grow-1">QRIS</button>
+                            </div>
+
+                            <button type="button" id="submitOrderBtn" class="btn w-100 text-white fw-bold py-2"
+                                style="background-color: #ff4d4f; border-radius: 10px;">
+                                🛒 Order Sekarang
+                            </button>
                         </div>
-                        <button type="button" id="submitOrderBtn" class="btn w-100 text-white fw-bold py-2" style="background-color: #ff4d4f; border-radius: 10px;">
-                            🛒 Order Sekarang
-                        </button>
                     </div>
-
                 </div>
             </div>
 
@@ -101,96 +163,233 @@
 
 @section('js')
 <script>
-document.querySelectorAll('.category-btn').forEach(btn => {
-    btn.addEventListener('click', function(){
-        let category = this.dataset.category;
-        document.querySelectorAll('.product-item').forEach(item => {
-            if(category === '' || item.dataset.category === category){
-                item.style.display = 'block';
-            } else {
-                item.style.display = 'none';
-            }
-        });
-    });
-});
 
-// Order logic
-let orderList = document.querySelector('#orderList');
-let totalEl = document.querySelector('#totalPrice');
-let orders = {}; // id produk => {name, price, qty, total}
+//Filter Kategori produk
+document.querySelectorAll('.category-btn').forEach(
+    btn => { btn.addEventListener('click', function(){
+        let category = this.dataset.category; 
 
+document.querySelectorAll('.product-item').forEach(item => {
+    if (category === '' || item.dataset.category === category){
+        item.style.display = 'block'; } 
+        else 
+        { item.style.display = 'none'; } }); }); });
+    
+// Array menyimpan order: {id, name, price, qty}
+let orderItems = [];
+
+// helper: cari index item berdasar id
+function findIndexById(id){
+    return orderItems.findIndex(it => String(it.id) === String(id));
+}
+
+// Tambah item lewat tombol Add 
 document.querySelectorAll('.add-to-order').forEach(btn => {
     btn.addEventListener('click', function(){
         let id = this.dataset.id;
         let name = this.dataset.name;
         let price = parseInt(this.dataset.price);
 
-        if(orders[id]){
-            orders[id].qty += 1;
-            orders[id].total = orders[id].qty * price;
-            let li = document.querySelector(`#order-item-${id}`);
-            li.querySelector('.item-qty').textContent = orders[id].qty;
-            li.querySelector('.item-total').textContent = 'Rp ' + orders[id].total.toLocaleString('id-ID');
+        let idx = findIndexById(id);
+        if(idx !== -1){
+            orderItems[idx].qty += 1;
         } else {
-            orders[id] = { name: name, price: price, qty: 1, total: price };
-            let li = document.createElement('li');
-            li.className = 'list-group-item d-flex justify-content-between align-items-center border-0 border-bottom';
-            li.id = `order-item-${id}`;
-            li.innerHTML = `
-                <span>${name} (<span class="item-qty">1</span>)</span>
-                <div>
-                    <span class="item-total">Rp ${price.toLocaleString('id-ID')}</span>
-                    <button type="button" class="btn btn-sm btn-danger ms-2 btn-cancel-item">×</button>
-                </div>
-            `;
-            orderList.appendChild(li);
-
-            li.querySelector('.btn-cancel-item').addEventListener('click', function(){
-                if(orders[id].qty > 1){
-                    orders[id].qty -= 1;
-                    orders[id].total = orders[id].qty * price;
-                    li.querySelector('.item-qty').textContent = orders[id].qty;
-                    li.querySelector('.item-total').textContent = 'Rp ' + orders[id].total.toLocaleString('id-ID');
-                } else {
-                    delete orders[id];
-                    li.remove();
-                }
-                updateTotal();
-            });
+            orderItems.push({id, name, price, qty: 1});
         }
 
+        renderOrderList();
         updateTotal();
+        updateTotalItemCount();
+        updateMenuCount();
     });
 });
 
-function updateTotal(){
-    let total = 0;
-    for(let key in orders){
-        total += orders[key].total;
+// Render list order
+function renderOrderList(){
+    let list = document.getElementById('orderList');
+    list.innerHTML = '';
+
+    orderItems.forEach((item, index) => {
+        let itemTotal = item.price * item.qty;
+        let li = document.createElement('li');
+        li.className = 'list-group-item d-flex justify-content-between align-items-center border-0 border-bottom';
+        li.dataset.index = index;
+        li.innerHTML = `
+            <div>
+                <strong>${escapeHtml(item.name)}</strong><br>
+                <small>Rp ${item.price.toLocaleString('id-ID')} x ${item.qty} = Rp ${itemTotal.toLocaleString('id-ID')}</small>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+                <button class="btn btn-sm btn-outline-danger btn-reduce" data-index="${index}">-</button>
+                <span class="mx-1">${item.qty}</span>
+                <button class="btn btn-sm btn-outline-success btn-increase" data-index="${index}">+</button>
+                <button class="btn btn-sm btn-danger btn-delete ms-2" data-index="${index}">×</button>
+            </div>
+        `;
+        list.appendChild(li);
+    });
+
+    attachOrderButtons();
+}
+
+// Escape sederhana untuk nama produk
+function escapeHtml(text) {
+    return String(text)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+// Attach event tombol + / - / delete
+function attachOrderButtons(){
+    document.querySelectorAll('.btn-increase').forEach(btn => {
+        btn.removeEventListener('click', onIncrease);
+        btn.addEventListener('click', onIncrease);
+    });
+    document.querySelectorAll('.btn-reduce').forEach(btn => {
+        btn.removeEventListener('click', onReduce);
+        btn.addEventListener('click', onReduce);
+    });
+    document.querySelectorAll('.btn-delete').forEach(btn => {
+        btn.removeEventListener('click', onDelete);
+        btn.addEventListener('click', onDelete);
+    });
+}
+
+function onIncrease(){
+    let idx = parseInt(this.dataset.index);
+    if(!isNaN(idx) && orderItems[idx]){
+        orderItems[idx].qty++;
+        renderOrderList();
+        updateTotal();
+        updateTotalItemCount();
+        updateMenuCount();
     }
-    totalEl.dataset.total = total;
-    totalEl.textContent = 'Rp ' + total.toLocaleString('id-ID');
+}
+
+function onReduce(){
+    let idx = parseInt(this.dataset.index);
+    if(!isNaN(idx) && orderItems[idx]){
+        orderItems[idx].qty--;
+        if(orderItems[idx].qty <= 0){
+            orderItems.splice(idx, 1);
+        }
+        renderOrderList();
+        updateTotal();
+        updateTotalItemCount();
+        updateMenuCount();
+    }
+}
+
+function onDelete(){
+    let idx = parseInt(this.dataset.index);
+    if(!isNaN(idx) && orderItems[idx]){
+        orderItems.splice(idx, 1);
+        renderOrderList();
+        updateTotal();
+        updateTotalItemCount();
+        updateMenuCount();
+    }
+}
+
+// Hitung Total Harga
+function updateTotal(){
+    let total = orderItems.reduce((sum, it) => sum + (it.price * it.qty), 0);
+    let totalEl = document.getElementById('totalPrice');
+    if(totalEl){
+        totalEl.dataset.total = total;
+        totalEl.textContent = 'Rp ' + total.toLocaleString('id-ID');
+    }
+}
+
+// Hitung Total Item (semua qty)
+function updateTotalItemCount(){
+    let totalItem = orderItems.reduce((sum, it) => sum + it.qty, 0);
+    let el = document.getElementById('totalItemCount');
+    if(el){
+        el.textContent = totalItem + " Item";
+    }
+}
+
+// Hitung Total Menu (unik)
+function updateMenuCount(){
+    let menuCount = orderItems.length;
+    let menuCountEl = document.getElementById('menuCount');
+    if(menuCountEl){
+        menuCountEl.textContent = menuCount + " Menu";
+    }
 }
 
 // Submit order
-document.getElementById('submitOrderBtn').addEventListener('click', function(){
-    let customerForm = document.getElementById('customerForm');
-    if(customerForm.namapelanggan.value.trim() === ''){
-        alert('Nama pelanggan harus diisi!');
-        return;
-    }
-    customerForm.submit();
-});
+let submitBtn = document.getElementById('submitOrderBtn');
+if(submitBtn){
+    submitBtn.addEventListener('click', function(){
+        let customerForm = document.getElementById('customerForm');
+        if(!customerForm){
+            alert('Form customer tidak ditemukan');
+            return;
+        }
+
+        let nama = customerForm.namapelanggan.value.trim();
+        let alamat = customerForm.alamat.value.trim();
+        let telepon = customerForm.no_telepon.value.trim();
+
+        if(nama === '' || alamat === '' || telepon === ''){
+            alert('Semua data pelanggan harus diisi!');
+            return;
+        }
+
+        if(orderItems.length === 0){
+            alert('Belum ada menu yang dipesan!');
+            return;
+        }
+
+        // Cek metode pembayaran
+        let metode = customerForm.metode_pembayaran.value;
+        if(!metode){
+            alert('Pilih metode pembayaran!');
+            return;
+        }
+
+        // Hapus input hidden lama kalau ada
+        let existingHidden = document.getElementById('orderDataInput');
+        if(existingHidden) existingHidden.remove();
+
+        // Buat input hidden baru
+        let hidden = document.createElement('input');
+        hidden.type = 'hidden';
+        hidden.name = 'order_data';
+        hidden.id = 'orderDataInput';
+        hidden.value = JSON.stringify(orderItems);
+        customerForm.appendChild(hidden);
+
+        customerForm.submit();
+
+        // Alert berhasil membuat order
+        alert('Order berhasil dibuat!');
+    });
+}
+
+// Inisialisasi
+renderOrderList();
+updateTotal();
+updateTotalItemCount();
+updateMenuCount();
+
 </script>
 
 <style>
-/* Hilangkan garis scroll pada card produk dan order menu */
-.card.flex-grow-1::-webkit-scrollbar {
+/* Hilangkan garis scroll bar di menu order */
+.card.flex-grow-1::-webkit-scrollbar,
+.flex-grow-1::-webkit-scrollbar {
     display: none;
 }
-.card.flex-grow-1 {
-    -ms-overflow-style: none;  /* IE & Edge */
-    scrollbar-width: none;     /* Firefox */
+.card.flex-grow-1,
+.flex-grow-1 {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }
 </style>
 @endsection
