@@ -63,6 +63,12 @@
                             <p>List Order</p>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a href="{{ route('kasir.managemeja.index') }}" class="nav-link {{ request()->routeIs('kasir.managemeja.index') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-tachometer-alt"></i>
+                            <p>Manage Meja</p>
+                        </a>
+                    </li>
                 </ul>
             </nav>
         </div>

@@ -9,8 +9,11 @@ class DetailTransaksiController extends Controller
 {
      public function index()
     {
-        // Ambil semua detail beserta relasi penjualan dan product
+        // Ambil semua detail dari penjualan yang sudah terbayar
         $details = PenjualanDetail::with(['penjualan.pelanggan', 'product'])
+                    ->whereHas('penjualan', function($query){
+                        $query->where('status_pembayaran', 'terbayar');
+                    })
                     ->orderBy('penjualan_id', 'asc')
                     ->get();
 

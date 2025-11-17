@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\InventoryController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Kasir\ListOrderController;
+use App\Http\Controllers\Kasir\MejaController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -47,6 +48,10 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/listorder/{id}/bayar', [ListOrderController::class, 'bayar'])
         ->name('kasir.listorder.bayar');
         // ->middleware('role:karyawan');
+
+        //Manage Meja
+        Route::get('kasir/managemeja', [MejaController::class, 'index'])->name('kasir.managemeja.index');
+        Route::post('kasir/managemeja', [MejaController::class, 'store'])->name('kasir.managemeja.store');
 
         //Transaksi
         Route::get('admin/detailtransaksi', [DetailTransaksiController::class, 'index'])

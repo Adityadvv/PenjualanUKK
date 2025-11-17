@@ -27,7 +27,7 @@
                             <div class="col-md-4 mb-3 product-item" data-category="{{ $product->category }}">
                                 <div class="card text-center p-2 hover-shadow">
                                     <img src="{{ $product->gambar ? asset('storage/'.$product->gambar) : asset('images/no-image.png') }}" 
-                                        class="img-fluid mb-2" alt="{{ $product->nama_product }}">
+                                        class="product-img img-fluid mb-2" alt="{{ $product->nama_product }}">
                                     <h6 class="mb-1">{{ $product->nama_product }}</h6>
                                     <p class="text-muted mb-1">Rp {{ number_format($product->harga_satuan,0,',','.') }}</p>
                                     <p class="text-muted mb-1">Stok: {{ $product->stok }}</p>
@@ -84,7 +84,7 @@
                             </div>
 
                             {{-- Nomor Meja --}}
-                            <div class="row g-2 mb-3 align-items-center">
+                            <div class="row g-2 mb-3 align-items-center" id="nomorMejaWrapper">
                                 <div class="col-md-4"><label class="fw-semibold">Nomor Meja</label></div>
                                 <div class="col-md-8">
                                     <select name="nomor_meja" id="nomorMejaInput" class="form-select" style="height: 38px; width: 100%;">
@@ -94,7 +94,6 @@
                                     </select>
                                 </div>
                             </div>
-
                             {{-- Metode Pembayaran --}}
                             <div class="row g-2 mb-3 align-items-center">
                                 <div class="col-md-4"><label class="fw-semibold">Metode Pembayaran</label></div>
@@ -139,12 +138,6 @@
                             <div class="mb-3 d-flex justify-content-between">
                                 <strong>Total Harga:</strong>
                                 <strong id="totalPrice" data-total="0">Rp 0</strong>
-                            </div>
-
-                            {{-- Metode Pembayaran (Cash / QRIS) --}}
-                            <div class="mb-3 d-flex gap-2">
-                                <button type="button" class="btn btn-outline-success flex-grow-1">Cash</button>
-                                <button type="button" class="btn btn-outline-primary flex-grow-1">QRIS</button>
                             </div>
 
                             <button type="button" id="submitOrderBtn" class="btn w-100 text-white fw-bold py-2"
@@ -203,6 +196,28 @@ document.querySelectorAll('.add-to-order').forEach(btn => {
         updateMenuCount();
     });
 });
+
+// Ambil elemen radio tipe pesanan dan wrapper nomor meja
+const dineInRadio = document.getElementById('dineIn');
+const takeAwayRadio = document.getElementById('takeAway');
+const nomorMejaWrapper = document.getElementById('nomorMejaWrapper');
+
+// Fungsi toggle nomor meja
+function toggleNomorMeja() {
+    if(dineInRadio.checked){
+        nomorMejaWrapper.style.display = 'flex';
+    } else {
+        nomorMejaWrapper.style.display = 'none';
+    }
+}
+
+// Inisialisasi saat halaman load
+toggleNomorMeja();
+
+// Tambahkan event listener ke radio
+dineInRadio.addEventListener('change', toggleNomorMeja);
+takeAwayRadio.addEventListener('change', toggleNomorMeja);
+
 
 // Render list order
 function renderOrderList(){
@@ -390,6 +405,22 @@ updateMenuCount();
 .flex-grow-1 {
     -ms-overflow-style: none;
     scrollbar-width: none;
+}
+
+/* Tinggi Gambar produk Sama */
+.product-item .product-img {
+    width: 100%;        
+    height: 150px;     
+    object-fit: cover; 
+    border-radius: 8px; 
+}
+
+/* card tetap tinggi */
+.product-item .card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 </style>
 @endsection
