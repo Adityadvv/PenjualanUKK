@@ -72,19 +72,37 @@
                     <li class="nav-item">
                         <a href="{{ route('product.index') }}" class="nav-link {{ request()->routeIs('product.index') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-tachometer-alt"></i>
-                            <p>Manajemen Produk</p>
+                            <p>Manage Produk</p>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a href="{{ route('inventory.index') }}" class="nav-link {{ request()->routeIs('inventory.index') ? 'active' : '' }}">
-                            <i class="nav-icon fas fa-tachometer-alt"></i>
-                            <p>Inventory Barang</p>
-                        </a>
-                    </li>
+                <li class="nav-item has-treeview {{ request()->is('admin/inventorybarang/*') || request()->is('admin/transaksibarang') ? 'menu-open' : '' }}">
+                    <a href="#" class="nav-link {{ request()->is('admin/inventorybarang/*') || request()->is('admin/transaksibarang') ? 'active' : '' }}" id="inventoryMenu">
+                        <i class="nav-icon fas fa-boxes"></i>
+                        <p>
+                            Inventory Barang
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('inventory.index') }}" class="nav-link {{ request()->is('admin/inventorybarang/inventory') ? 'active' : '' }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Daftar Barang & Supplier</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('inventory.transaksi') }}" class="nav-link {{ request()->is('admin/transaksibarang') ? 'active' : '' }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Transaksi Barang</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
                     <li class="nav-item">
                         <a href="{{ route('admin.setting') }}" class="nav-link {{ request()->routeIs('admin.setting') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-tachometer-alt"></i>
-                            <p>Setting</p>
+                            <p>User Management</p>
                         </a>
                     </li>
                 </ul>
@@ -109,6 +127,54 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="{{ asset('adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 <script src="{{ asset('adminlte/dist/js/adminlte.min.js') }}"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Ambil semua treeview menu
+    const treeviews = document.querySelectorAll('.nav-item.has-treeview');
+
+    treeviews.forEach(treeview => {
+        const link = treeview.querySelector('a.nav-link');
+
+        // Klik parent toggle submenu
+        link.addEventListener('click', function(e){
+            e.preventDefault();
+            // Toggle menu-open hanya kalau klik parent, jangan reset submenu aktif
+            treeview.classList.toggle('menu-open');
+            link.classList.toggle('active');
+        });
+
+        // Cek halaman aktif dari URL untuk submenu
+        const subLinks = treeview.querySelectorAll('.nav-treeview .nav-link');
+        subLinks.forEach(subLink => {
+            if(subLink.href === window.location.href){
+                subLink.classList.add('active');
+                treeview.classList.add('menu-open'); // buka parent jika submenu aktif
+                link.classList.add('active'); // highlight parent
+            }
+        });
+    });
+});
+</script>
+
+<style>
+    /* Submenu aktif */
+.nav-treeview .nav-link.active {
+    background-color: #b3d7ff; /* biru muda */
+    color: #000; /* teks hitam, bisa disesuaikan */
+}
+
+/* Parent menu aktif tetap default, atau bisa kasih warna lain */
+.nav-item.has-treeview > .nav-link.active {
+    background-color: #007bff; /* biru default, optional */
+    color: #fff;
+}
+
+/* Hover submenu */
+.nav-treeview .nav-link:hover {
+    background-color: #cce6ff; /* biru muda sedikit terang saat hover */
+}
+</style>
 
 @yield('js')
 </body>

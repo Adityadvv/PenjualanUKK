@@ -4,13 +4,13 @@
 
 @section('content')
 <div class="container-fluid pt-3">
-    <h3>🪑 Manage Meja</h3>
+    <h3>🪑 Daftar Meja</h3>
     <hr>
 
     {{-- Tambah Meja Baru --}}
-    <form action="{{ route('kasir.managemeja.store') }}" method="POST" class="mb-3 d-flex gap-2">
+    <form action="{{ route('kasir.daftarmeja.store') }}" method="POST" class="mb-3 d-flex gap-2">
         @csrf
-        <input type="number" name="nomor_meja" class="form-control" placeholder="Nomor Meja" required>
+        <input type="number" style="height: 38px; width: 250px;" name="nomor_meja" class="form-control" placeholder="Nomor Meja" required>
         <button type="submit" class="btn btn-primary">Tambah Meja</button>
     </form>
 
@@ -20,7 +20,6 @@
             <table class="table table-bordered">
                 <thead class="table-primary">
                     <tr>
-                        <th>No</th>
                         <th>Nomor Meja</th>
                         <th>Status</th>
                         <th>Oleh</th>
@@ -29,8 +28,7 @@
                 <tbody>
                     @foreach($mejas as $meja)
                     <tr>
-                        <td>{{ $loop->iteration }}</td>
-                        <td>{{ $meja->nomor_meja }}</td>
+                        <td>{{ str_pad($meja->nomor_meja, 2, '0', STR_PAD_LEFT) }}</td>
                         <td>
                             @if($meja->status === 'tersedia')
                                 <span class="badge bg-success">Tersedia</span>

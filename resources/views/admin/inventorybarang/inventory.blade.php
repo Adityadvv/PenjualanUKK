@@ -113,17 +113,17 @@
                                     <td>{{ $supplier->keterangan }}</td>
                                     <td class="text-center">
                                         <button class="btn btn-sm btn-warning" data-toggle="modal" data-target="#editSupplierModal{{ $supplier->id }}">Edit</button>
-                                        <form action="{{ route('inventory.destroy', $supplier->id) }}" method="POST" style="display:inline-block;">
+                                        <form action="{{ route('inventory.destroy', $supplier->id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Apakah yakin ingin menghapus supplier & barang ini?');">
                                             @csrf
                                             @method('DELETE')
-                                            <button class="btn btn-sm btn-danger" onclick="return confirm('Apakah Yakin ingin menghapus?')">Hapus</button>
+                                            <button type="submit" class="btn btn-sm btn-danger">Hapus</button>
                                         </form>
                                     </td>
                                 </tr>
                                 @php $noSupplier++; @endphp
                                 @empty
                                 <tr>
-                                    <td colspan="9" class="text-center">Belum ada data supplier.</td>
+                                    <td colspan="8" class="text-center">Belum ada data supplier.</td>
                                 </tr>
                                 @endforelse
                             </tbody>
@@ -189,9 +189,7 @@
                     <div class="form-group"><input type="text" name="no_telp" class="form-control" value="{{ $supplier->no_telp }}"></div>
                     <div class="form-group"><textarea name="alamat" class="form-control">{{ $supplier->alamat }}</textarea></div>
                     <div class="form-group"><textarea name="keterangan" class="form-control">{{ $supplier->keterangan }}</textarea></div>
-
                     <hr>
-
                     {{-- Barang --}}
                     <div class="barang-wrapper">
                         @foreach($supplier->barangs as $barang)
@@ -277,6 +275,7 @@ $(document).ready(function() {
 
     // Tambah barang dinamis (modal tambah & edit)
     $(document).on("click", "#addBarangBtn, .addBarangBtn", function() {
+        var wrapper = $(this).closest(".modal-body").find(".barang-wrapper");
         var html = `<div class="barang-item mb-2">
             <div class="row">
                 <div class="col"><input type="text" name="barang[nama_barang][]" class="form-control" placeholder="Nama Barang" required></div>
@@ -286,7 +285,7 @@ $(document).ready(function() {
                 <div class="col-auto"><button type="button" class="btn btn-danger btn-sm remove-barang">X</button></div>
             </div>
         </div>`;
-        $(this).closest(".modal-body").find(".barang-wrapper").append(html);
+        wrapper.append(html);
     });
 
     // Hapus barang dinamis

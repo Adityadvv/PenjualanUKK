@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DetailTransaksiController;
+use App\Http\Controllers\Admin\TransaksiBarangController;
 use App\Http\Controllers\Admin\DataPelangganController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\InventoryController;
@@ -43,15 +44,14 @@ Route::middleware(['auth'])->group(function () {
         //ListOrder
         Route::get('kasir/listorder', [ListOrderController::class, 'index'])
         ->name('kasir.listorder');
-        Route::get('/listorder/{id}', [ListOrderController::class, 'show'])
-        ->name('kasir.listorder.show');
-        Route::post('/listorder/{id}/bayar', [ListOrderController::class, 'bayar'])
+        // Proses pembayaran & kembalikan struk HTML
+        Route::post('kasir/listorder/{id}/bayar', [ListOrderController::class, 'bayar'])
         ->name('kasir.listorder.bayar');
         // ->middleware('role:karyawan');
 
         //Manage Meja
-        Route::get('kasir/managemeja', [MejaController::class, 'index'])->name('kasir.managemeja.index');
-        Route::post('kasir/managemeja', [MejaController::class, 'store'])->name('kasir.managemeja.store');
+        Route::get('kasir/daftarmeja', [MejaController::class, 'index'])->name('kasir.daftarmeja.index');
+        Route::post('kasir/daftarmeja', [MejaController::class, 'store'])->name('kasir.daftarmeja.store');
 
         //Transaksi
         Route::get('admin/detailtransaksi', [DetailTransaksiController::class, 'index'])
@@ -77,15 +77,14 @@ Route::middleware(['auth'])->group(function () {
         // ->middleware('role:admin');
 
         //Inventory ( Barang dan Supplier )
-         Route::get('admin/inventory', [InventoryController::class, 'index'])
-        ->name('inventory.index');
-         Route::post('admin/inventory', [InventoryController::class, 'store'])
-        ->name('inventory.store');
-         Route::put('admin/inventory/{id}', [InventoryController::class, 'update'])
-        ->name('inventory.update');
-         Route::delete('admin/inventory/{id}', [InventoryController::class, 'destroy'])
-        ->name('inventory.destroy');
-        // ->middleware('role:admin');
+        Route::get('admin/inventory', [InventoryController::class, 'index'])->name('inventory.index');
+        Route::post('admin/inventory', [InventoryController::class, 'store'])->name('inventory.store');
+        Route::put('admin/inventory/{id}', [InventoryController::class, 'update'])->name('inventory.update');
+        Route::delete('admin/inventory/{id}', [InventoryController::class, 'destroy'])->name('inventory.destroy');
+
+        // Transaksi Barang
+        Route::get('admin/transaksibarang', [TransaksiBarangController::class,'index'])->name('inventory.transaksi');
+        Route::post('admin/transaksibarang', [TransaksiBarangController::class,'store'])->name('inventory.transaksi.store');
 
         //Setting ( User Management )
          Route::get('admin/setting', [UserController::class, 'index'])

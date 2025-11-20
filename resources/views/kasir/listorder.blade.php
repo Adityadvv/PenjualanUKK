@@ -49,12 +49,12 @@
     </div>
 </div>
 
-{{-- Modal Bayar (diletakkan di luar table) --}}
+{{-- Modal Bayar --}}
 @foreach($orders as $order)
 <div class="modal fade" id="bayarModal{{ $order->penjualan_id }}" tabindex="-1">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <form action="{{ route('kasir.listorder.bayar', $order->penjualan_id) }}" method="POST">
+            <form onsubmit="return bayarDanTampilStruk(this, {{ $order->penjualan_id }})" method="POST" action="{{ route('kasir.listorder.bayar', $order->penjualan_id) }}">
                 @csrf
                 <div class="modal-header">
                     <h5 class="modal-title">Bayar Order - {{ $order->pelanggan->namapelanggan }}</h5>
@@ -66,35 +66,24 @@
                     <h6>Data Pelanggan</h6>
                     <div class="row mb-2">
                         <div class="col-md-4 fw-semibold">Nama</div>
-                        <div class="col-md-8">
-                            <input type="text" class="form-control" value="{{ $order->pelanggan->namapelanggan }}" readonly>
-                        </div>
+                        <div class="col-md-8"><input type="text" class="form-control" value="{{ $order->pelanggan->namapelanggan }}" readonly></div>
                     </div>
                     <div class="row mb-2">
                         <div class="col-md-4 fw-semibold">Alamat</div>
-                        <div class="col-md-8">
-                            <input type="text" class="form-control" value="{{ $order->pelanggan->alamat }}" readonly>
-                        </div>
+                        <div class="col-md-8"><input type="text" class="form-control" value="{{ $order->pelanggan->alamat }}" readonly></div>
                     </div>
                     <div class="row mb-2">
                         <div class="col-md-4 fw-semibold">No Telepon</div>
-                        <div class="col-md-8">
-                            <input type="text" class="form-control" value="{{ $order->pelanggan->no_telepon }}" readonly>
-                        </div>
+                        <div class="col-md-8"><input type="text" class="form-control" value="{{ $order->pelanggan->no_telepon }}" readonly></div>
                     </div>
                     <div class="row mb-2">
                         <div class="col-md-4 fw-semibold">Tipe Pesanan</div>
-                        <div class="col-md-8">
-                            <input type="text" class="form-control" value="{{ ucfirst(str_replace('_',' ', $order->pelanggan->tipe_pesanan)) }}" readonly>
-                        </div>
+                        <div class="col-md-8"><input type="text" class="form-control" value="{{ ucfirst(str_replace('_',' ', $order->pelanggan->tipe_pesanan)) }}" readonly></div>
                     </div>
-                    
                     @if($order->pelanggan->tipe_pesanan === 'dine_in')
                     <div class="row mb-2">
                         <div class="col-md-4 fw-semibold">Nomor Meja</div>
-                        <div class="col-md-8">
-                            <input type="text" class="form-control" value="{{ $order->pelanggan->nomor_meja ?? '-' }}" readonly>
-                        </div>
+                        <div class="col-md-8"><input type="text" class="form-control" value="{{ $order->pelanggan->nomor_meja ?? '-' }}" readonly></div>
                     </div>
                     @endif
 
@@ -133,17 +122,23 @@
                     {{-- Metode Pembayaran --}}
                     <div class="row mb-2">
                         <div class="col-md-4 fw-semibold">Metode Pembayaran</div>
-                        <div class="col-md-8">
-                            <select name="metode_pembayaran" class="form-control" required>
+                        <div class="col-md-8 d-flex align-items-center">
+                            <select name="metode_pembayaran" class="form-control" onchange="toggleQris(this, {{ $order->penjualan_id }})" required>
                                 <option value="cash" {{ ($order->metode_pembayaran ?? 'cash') === 'cash' ? 'selected' : '' }}>Cash</option>
                                 <option value="qris" {{ ($order->metode_pembayaran ?? 'cash') === 'qris' ? 'selected' : '' }}>QRIS</option>
                             </select>
+                            <button type="button" class="btn btn-outline-secondary ml-2" id="btnQris{{ $order->penjualan_id }}" style="display:none;" onclick="toggleShowQris({{ $order->penjualan_id }})">
+                                <i class="fas fa-eye"></i>
+                            </button>
                         </div>
+                    </div>
+                    <div id="qrisContainer{{ $order->penjualan_id }}" style="display:none; text-align:center; margin-top:10px;">
+                        <img src="{{ asset('storage/qrcode.png') }}" alt="QRIS" width="150">
                     </div>
 
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Bayar & Buat Struk</button>
+                    <button type="submit" class="btn btn-primary">Bayar & Tampilkan Struk</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
                 </div>
             </form>
@@ -151,6 +146,27 @@
     </div>
 </div>
 @endforeach
+
+{{-- Modal Struk --}}
+<div class="modal fade" id="strukModal" tabindex="-1">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Resto Nusantara</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body d-flex justify-content-center align-items-center" 
+                 id="strukContent" 
+                 style="font-family: monospace; text-align: center; min-height: 250px; white-space: pre-wrap;">
+                <!-- Konten struk muncul di sini -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" onclick="printStruk()">Cetak Struk</button>
+                <button class="btn btn-secondary" data-dismiss="modal">Kembali</button>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
 @section('js')
@@ -159,12 +175,91 @@ document.addEventListener('DOMContentLoaded', function() {
     const alertBox = document.getElementById('successAlert');
     if(alertBox){
         setTimeout(() => {
-            // Hilangkan alert dengan fade out
             alertBox.style.transition = "opacity 0.5s ease";
             alertBox.style.opacity = 0;
             setTimeout(() => alertBox.remove(), 500);
-        }, 3000); // 3 detik
+        }, 3000);
     }
+
+    // otomatis toggle QRIS jika select sudah qris
+    @foreach($orders as $order)
+        const sel{{ $order->penjualan_id }} = document.querySelector('#bayarModal{{ $order->penjualan_id }} select[name="metode_pembayaran"]');
+        toggleQris(sel{{ $order->penjualan_id }}, {{ $order->penjualan_id }});
+    @endforeach
 });
+
+// Bayar & Tampilkan struk
+function bayarDanTampilStruk(form, id) {
+    const formData = new FormData(form);
+    fetch(form.action, {
+        method: 'POST',
+        body: formData,
+        headers: { 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content }
+    })
+    .then(res => res.json())
+    .then(data => {
+        if(data.success){
+            document.getElementById('strukContent').innerHTML = data.strukHtml;
+            $('#strukModal').modal('show');
+            $('#bayarModal'+id).modal('hide');
+
+            // Update badge Terbayar tanpa reload
+            const row = document.querySelector('#bayarModal'+id).closest('tr');
+            if(row){
+                row.querySelector('td.text-center').innerHTML = '<span class="badge badge-info">Terbayar</span>';
+            }
+        } else {
+            alert('Gagal menampilkan struk: ' + (data.message || 'Error'));
+        }
+    })
+    .catch(err => { console.error(err); alert('Terjadi kesalahan saat memproses pembayaran.'); });
+    return false;
+}
+
+
+// cetak struk
+function printStruk() {
+    var content = document.getElementById("strukContent").innerHTML;
+    var myWindow = window.open('', 'Print Struk', 'height=600,width=400');
+
+    myWindow.document.write('<html><head><title>Struk Pembayaran</title>');
+    myWindow.document.write('<style>');
+    myWindow.document.write(`
+        body {
+            font-family: monospace;
+            text-align: center; 
+            display: block; 
+            margin: 20px;      
+        }
+    `);
+    myWindow.document.write('</style>');
+    myWindow.document.write('</head><body>');
+    myWindow.document.write(content);
+    myWindow.document.write('</body></html>');
+
+    myWindow.document.close();
+    myWindow.focus();
+    myWindow.print();
+    // Hapus myWindow.close(); agar modal tidak langsung close
+}
+
+// toggle QRIS button
+function toggleQris(select, id){
+    const btn = document.getElementById('btnQris'+id);
+    const container = document.getElementById('qrisContainer'+id);
+    if(select.value === 'qris'){
+        btn.style.display = 'inline-block';
+        container.style.display = 'none';
+    } else {
+        btn.style.display = 'none';
+        container.style.display = 'none';
+    }
+}
+
+// tampilkan / sembunyikan QRIS
+function toggleShowQris(id){
+    const container = document.getElementById('qrisContainer'+id);
+    container.style.display = (container.style.display === 'block') ? 'none' : 'block';
+}
 </script>
 @endsection

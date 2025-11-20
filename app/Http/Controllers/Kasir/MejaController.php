@@ -11,7 +11,7 @@ class MejaController extends Controller
     public function index()
     {
         $mejas = Meja::orderBy('nomor_meja')->get();
-        return view('kasir.managemeja', compact('mejas'));
+        return view('kasir.daftarmeja', compact('mejas'));
     }
 
     public function store(Request $request)

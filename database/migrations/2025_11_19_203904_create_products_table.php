@@ -15,6 +15,7 @@ return new class extends Migration
             $table->string('category')->nullable();
             $table->decimal('harga_satuan', 10, 2);
             $table->integer('stok');
+            $table->integer('terjual')->default(0)->comment('Jumlah produk yang sudah terjual'); // <-- kolom baru
             $table->timestamps();
         });
     }

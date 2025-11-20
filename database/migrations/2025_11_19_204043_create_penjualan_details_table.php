@@ -26,4 +26,4 @@ return new class extends Migration
     {
         Schema::dropIfExists('penjualan_details');
     }
-};
+};return redirect()->route('admin.setting')->with('success', 'Pengguna dihapus');

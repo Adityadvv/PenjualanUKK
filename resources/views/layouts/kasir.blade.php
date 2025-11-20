@@ -64,9 +64,9 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('kasir.managemeja.index') }}" class="nav-link {{ request()->routeIs('kasir.managemeja.index') ? 'active' : '' }}">
+                        <a href="{{ route('kasir.daftarmeja.index') }}" class="nav-link {{ request()->routeIs('kasir.daftarmeja.index') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-tachometer-alt"></i>
-                            <p>Manage Meja</p>
+                            <p>Daftar Meja</p>
                         </a>
                     </li>
                 </ul>

@@ -22,7 +22,7 @@ class DashboardController extends Controller
         // Ambil meja yang tersedia
         $mejas = Meja::where('status', 'tersedia')->orderBy('nomor_meja')->get();
 
-        return view('kasir.dashboard', compact('products', 'categories'));
+        return view('kasir.dashboard', compact('products', 'categories', 'mejas'));
     }
 
         public function store(Request $request)

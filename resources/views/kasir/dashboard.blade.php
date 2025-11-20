@@ -88,9 +88,11 @@
                                 <div class="col-md-4"><label class="fw-semibold">Nomor Meja</label></div>
                                 <div class="col-md-8">
                                     <select name="nomor_meja" id="nomorMejaInput" class="form-select" style="height: 38px; width: 100%;">
-                                        @for ($i = 1; $i <= 20; $i++)
-                                            <option value="{{ $i }}">Meja {{ $i }}</option>
-                                        @endfor
+                                        @foreach ($mejas as $meja)
+                                            <option value="{{ $meja->nomor_meja }}">
+                                                Meja {{ str_pad($meja->nomor_meja, 2, '0', STR_PAD_LEFT) }}
+                                            </option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
