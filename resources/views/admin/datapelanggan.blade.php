@@ -13,8 +13,8 @@
                 <thead class="table-primary text-center">
                     <tr>
                         <th scope="col" width="5%">No</th>
-                        <th scope="col" width="10%">Nama Pelanggan</th>
-                        <th scope="col" width="15%">Alamat</th>
+                        <th scope="col" style="text-align: left; width: 10%">Nama Pelanggan</th>
+                        <th scope="col" style="text-align: left; width: 15%">Alamat</th>
                         <th scope="col" width="10%">No Telepon</th>
                     </tr>
                 </thead>
@@ -22,9 +22,9 @@
                     @forelse ($pelanggans as $index => $pelanggan)
                         <tr>
                             <td class="text-center">{{ $index + 1 }}</td>
-                            <td>{{ $pelanggan->namapelanggan }}</td>
-                            <td>{{ $pelanggan->alamat ?? '-' }}</td>
-                            <td>{{ $pelanggan->no_telepon ?? '-' }}</td>
+                            <td style="text-align: left;">{{ $pelanggan->namapelanggan }}</td>
+                            <td style="text-align: left;">{{ $pelanggan->alamat ?? '-' }}</td>
+                            <td style="text-align: center;">{{ $pelanggan->no_telepon ?? '-' }}</td>
                         </tr>
                     @empty
                         <tr>

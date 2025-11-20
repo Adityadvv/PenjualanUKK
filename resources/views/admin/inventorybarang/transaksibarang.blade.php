@@ -13,20 +13,20 @@
                 <table class="table table-bordered table-striped">
                     <thead class="table-primary">
                         <tr>
-                            <th>No</th>
+                            <th style="text-align: center;">No</th>
                             <th>Nama Barang</th>
                             <th>Supplier</th>
                             <th>Harga / Kg</th>
                             <th>Qty (Kg)</th>
                             <th>Total Pengeluaran</th>
-                            <th>Tanggal</th>
+                            <th style="text-align: center;" >Tanggal</th>
                         </tr>
                     </thead>
                     <tbody>
                         @php $grandTotal = 0; @endphp
                         @forelse($transaksis as $i => $transaksi)
                             <tr>
-                                <td>{{ $i + 1 }}</td>
+                                <td style="text-align: center;">{{ $i + 1 }}</td>
                                 <td>{{ $transaksi->barang->nama_barang }}</td>
                                 <td>{{ $transaksi->supplier->nama_supplier ?? '-' }}</td>
                                 <td>Rp{{ number_format($transaksi->harga_per_kg,0,',','.') }}</td>

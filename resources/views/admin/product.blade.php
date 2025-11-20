@@ -47,8 +47,8 @@
                     <tr>
                         <th>No</th>
                         <th>Gambar</th>
-                        <th>Nama Produk</th>
-                        <th>Harga Satuan</th>
+                        <th style="text-align: left;">Nama Produk</th>
+                        <th style="text-align: left;">Harga Satuan</th>
                         <th>Stok</th>
                         <th>Aksi</th>
                     </tr>
@@ -282,38 +282,6 @@ $(document).on('click', '.btn-danger', function(){
         }
     });
 });
-
-    
-// $('#createProductModal form').submit(function(e){
-//     e.preventDefault();
-//     let formData = new FormData(this);
-//     $.ajax({
-//         url: $(this).attr('action'),
-//         type: 'POST',
-//         data: formData,
-//         contentType: false,
-//         processData: false,
-//         success: function(res){
-//             alert(res.message);
-//             location.reload();
-//         },
-//         error: function(xhr){
-//             console.log(xhr.responseJSON); // <-- Lihat error validasi
-//             if(xhr.status === 422){
-//                 let errors = xhr.responseJSON.errors;
-//                 let msg = '';
-//                 for(let key in errors){
-//                     msg += errors[key].join(', ') + '\n';
-//                 }
-//                 alert(msg);
-//             } else {
-//                 alert('Terjadi kesalahan server');
-//             }
-//         }
-//     });
-// });
-
-
 });
 
 </script>

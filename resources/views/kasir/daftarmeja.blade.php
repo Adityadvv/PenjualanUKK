@@ -20,16 +20,16 @@
             <table class="table table-bordered">
                 <thead class="table-primary">
                     <tr>
-                        <th>Nomor Meja</th>
-                        <th>Status</th>
+                        <th style="text-align: center; width : 25%">Nomor Meja</th>
+                        <th style="text-align: center; width: 35%">Status</th>
                         <th>Oleh</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach($mejas as $meja)
                     <tr>
-                        <td>{{ str_pad($meja->nomor_meja, 2, '0', STR_PAD_LEFT) }}</td>
-                        <td>
+                        <td style="text-align: center;">{{ str_pad($meja->nomor_meja, 2, '0', STR_PAD_LEFT) }}</td>
+                        <td style="text-align: center;">
                             @if($meja->status === 'tersedia')
                                 <span class="badge bg-success">Tersedia</span>
                             @else

@@ -16,19 +16,19 @@
             <table class="table table-bordered table-striped">
                 <thead class="table-primary">
                     <tr>
-                        <th>No</th>
+                        <th style="text-align: center;">No</th>
                         <th>Nama Pelanggan</th>
-                        <th>Tanggal Pemesanan</th>
+                        <th style="text-align: center;">Tanggal Pemesanan</th>
                         <th>Total Harga</th>
-                        <th>Status</th>
+                        <th style="text-align: center;">Status</th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse($orders as $order)
                     <tr>
-                        <td>{{ $loop->iteration }}</td>
+                        <td style="text-align: center;">{{ $loop->iteration }}</td>
                         <td>{{ $order->pelanggan->namapelanggan }}</td>
-                        <td>{{ \Carbon\Carbon::parse($order->tanggal_penjualan)->format('d-m-Y H:i') }}</td>
+                        <td style="text-align: center;">{{ \Carbon\Carbon::parse($order->tanggal_penjualan)->format('d-m-Y H:i') }}</td>
                         <td>Rp {{ number_format($order->total_harga,0,',','.') }}</td>
                         <td class="text-center">
                             @if($order->status_pembayaran === 'belum_terbayar')
@@ -202,6 +202,13 @@ function bayarDanTampilStruk(form, id) {
             document.getElementById('strukContent').innerHTML = data.strukHtml;
             $('#strukModal').modal('show');
             $('#bayarModal'+id).modal('hide');
+
+            // FIX: hapus backdrop lama yang nutupin tombol X dan Kembali
+            setTimeout(() => {
+                $('.modal-backdrop').remove();
+                $('body').removeClass('modal-open');
+            }, 300);
+
 
             // Update badge Terbayar tanpa reload
             const row = document.querySelector('#bayarModal'+id).closest('tr');

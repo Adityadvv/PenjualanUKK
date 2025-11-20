@@ -14,25 +14,25 @@
             <table class="table table-bordered table-striped" id="detailTransaksiTable">
                 <thead class="table-primary">
                     <tr>
-                        <th>No</th>
-                        <th>Penjualan ID</th>
+                        <th style="text-align: center;">No</th>
+                        <th style="text-align: center;">Penjualan ID</th>
                         <th>Nama Pelanggan</th>
                         <th>Produk</th>
-                        <th>Jumlah</th>
+                        <th style="text-align: center;">Jumlah</th>
                         <th>Subtotal</th>
-                        <th>Tanggal Penjualan</th>
+                        <th style="text-align: center;">Tanggal Penjualan</th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse ($details as $index => $item)
                     <tr>
-                        <td>{{ $index + 1 }}</td>
-                        <td>{{ $item->penjualan->kode_penjualan }}</td>
+                        <td style="text-align: center;">{{ $index + 1 }}</td>
+                        <td style="text-align: center;">{{ $item->penjualan->kode_penjualan }}</td>
                         <td>{{ $item->penjualan->pelanggan->namapelanggan }}</td>
                         <td>{{ $item->product->nama_product }}</td>
-                        <td>{{ $item->jumlah_product }}</td>
+                        <td style="text-align: center;">{{ $item->jumlah_product }}</td>
                         <td>Rp {{ number_format($item->subtotal,0,',','.') }}</td>
-                        <td>{{ $item->penjualan->tanggal_penjualan->format('d-m-Y H:i') }}</td>
+                        <td style="text-align: center;">{{ $item->penjualan->tanggal_penjualan->format('d-m-Y H:i') }}</td>
                     </tr>
                     @empty
                     <tr>
