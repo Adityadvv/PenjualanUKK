@@ -12,12 +12,22 @@
                 {{-- Card Kategori --}}
                 <div class="card mb-3 p-3 shadow-sm">
                     <h5 class="mb-3">Menu Category</h5>
-                    <div class="d-flex flex-wrap gap-2">
-                        <button class="btn btn-outline-primary btn-sm category-btn" data-category="">Semua Menu</button>
+<div class="d-flex flex-wrap">
+        <button class="btn btn-outline-primary btn-sm px-2 py-1 mr-2 mb-2 category-btn" data-category="">
+            Semua Menu
+        </button>
                         @foreach ($categories as $category)
-                            <button class="btn btn-outline-primary btn-sm category-btn" data-category="{{ $category }}">{{ $category }}</button>
-                        @endforeach
-                    </div>
+            <button class="btn btn-outline-primary btn-sm px-2 py-1 mr-2 mb-2 category-btn"
+                    data-category="{{ $category }}">
+                {{ $category }}
+            </button>
+    @endforeach
+</div>
+
+
+
+
+
                 </div>
 
                 {{-- Card Produk --}}
@@ -35,7 +45,7 @@
                                             data-id="{{ $product->product_id }}"
                                             data-name="{{ $product->nama_product }}"
                                             data-price="{{ $product->harga_satuan }}">
-                                        Add
+                                        Add +
                                     </button>
                                 </div>
                             </div>

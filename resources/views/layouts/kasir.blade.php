@@ -19,7 +19,7 @@
                 <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
             </li>
                 <li class="nav-item d-none d-sm-inline-block">
-                <a href="{{ route('kasir.dashboard') }}" class="nav-link">Dashboard</a>
+                <a href="{{ route('kasir.dashboard') }}" class="nav-link">Order Management</a>
             </li>
             </ul>
 
@@ -34,12 +34,7 @@
             </ul>
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
-
-                <x-responsive-nav-link :href="route('logout')"
-                        onclick="event.preventDefault();
-                                    this.closest('form').submit();">
-                    {{ __('Log Out') }}
-                </x-responsive-nav-link>
+            <button class="logout-btn" type="submit"> Logout</button>
             </form>
         </nav>
 
@@ -91,6 +86,15 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="{{ asset('adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 <script src="{{ asset('adminlte/dist/js/adminlte.min.js') }}"></script>
+
+<style>
+    .logout-btn{
+        background-color: #ef4646ff;
+        color: white;
+        border-radius: 6px;
+}
+</style>
+
 @yield('js')
 </body>
 </html>

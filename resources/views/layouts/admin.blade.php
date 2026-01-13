@@ -19,7 +19,7 @@
                 <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
             </li>
                 <li class="nav-item d-none d-sm-inline-block">
-                <a href="" class="nav-link">Dashboard</a>
+                <a href="" class="nav-link">Resto Management System</a>
             </li>
             </ul>
 
@@ -34,12 +34,7 @@
             </ul>
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
-
-                <x-responsive-nav-link :href="route('logout')"
-                        onclick="event.preventDefault();
-                                    this.closest('form').submit();">
-                    {{ __('Log Out') }}
-                </x-responsive-nav-link>
+            <button class="logout-btn" type="submit"> Logout</button>
             </form>
         </nav>
 
@@ -160,19 +155,25 @@ document.addEventListener('DOMContentLoaded', function() {
 <style>
     /* Submenu aktif */
 .nav-treeview .nav-link.active {
-    background-color: #b3d7ff; /* biru muda */
-    color: #000; /* teks hitam, bisa disesuaikan */
+    background-color: #b3d7ff;
+    color: #000;
 }
 
-/* Parent menu aktif tetap default, atau bisa kasih warna lain */
+/* Parent menu aktif tetap default */
 .nav-item.has-treeview > .nav-link.active {
-    background-color: #007bff; /* biru default, optional */
+    background-color: #007bff;
     color: #fff;
 }
 
 /* Hover submenu */
 .nav-treeview .nav-link:hover {
-    background-color: #cce6ff; /* biru muda sedikit terang saat hover */
+    background-color: #cce6ff;
+}
+
+.logout-btn{
+        background-color: #ef4646ff;
+        color: white;
+        border-radius: 6px;
 }
 </style>
 
