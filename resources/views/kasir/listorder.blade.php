@@ -4,12 +4,11 @@
 
 @section('content')
 <div class="container-fluid pt-3">
-    <h3>📋 List Order Customer</h3>
-    <hr>
-
-    @if(session('success'))
-        <div id="successAlert" class="alert alert-success">{{ session('success') }}</div>
-    @endif
+    <div class="card shadow-sm rounded">
+        <div class="card-body">
+            <div class="d-flex mb-3 justify-content-between align-items-center">
+                <h5 class="mb-0">📋 List Order Customer</h5>
+            </div>
 
     <div class="card shadow-sm rounded">
         <div class="card-body">
@@ -139,7 +138,6 @@
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary">Bayar & Tampilkan Struk</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
                 </div>
             </form>
         </div>
@@ -161,19 +159,24 @@
                 <!-- Konten struk muncul di sini -->
             </div>
             <div class="modal-footer">
-                <button class="btn btn-primary" onclick="printStruk()">Cetak Struk</button>
-                <button class="btn btn-secondary" data-dismiss="modal">Kembali</button>
+                <button type="button" id="submitProductBtn"class="btn btn-primary" onclick="printStruk()">Cetak Struk</button>
+                <button type="button" id="submitOrderBtn" class="btn btn-success">Selesai</button>
             </div>
         </div>
     </div>
 </div>
+</div>
+</div>
 @endsection
 
 @section('js')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <script>
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
+
     const alertBox = document.getElementById('successAlert');
-    if(alertBox){
+    if (alertBox) {
         setTimeout(() => {
             alertBox.style.transition = "opacity 0.5s ease";
             alertBox.style.opacity = 0;
@@ -181,11 +184,41 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 3000);
     }
 
-    // otomatis toggle QRIS jika select sudah qris
+    //toggle qris 
     @foreach($orders as $order)
-        const sel{{ $order->penjualan_id }} = document.querySelector('#bayarModal{{ $order->penjualan_id }} select[name="metode_pembayaran"]');
-        toggleQris(sel{{ $order->penjualan_id }}, {{ $order->penjualan_id }});
+        const sel{{ $order->penjualan_id }} =
+            document.querySelector('#bayarModal{{ $order->penjualan_id }} select[name="metode_pembayaran"]');
+
+        if (sel{{ $order->penjualan_id }}) {
+            toggleQris(sel{{ $order->penjualan_id }}, {{ $order->penjualan_id }});
+        }
     @endforeach
+
+    const kembaliBtn = document.getElementById('submitOrderBtn');
+    if (kembaliBtn) {
+        kembaliBtn.addEventListener('click', function () {
+
+            $('#strukModal').modal('hide');
+
+            // backdrop fix
+            $('body').removeClass('modal-open');
+            $('.modal-backdrop').remove();
+
+            setTimeout(() => {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil!',
+                    text: 'Transaksi selesai',
+                    showConfirmButton: false,
+                    timer: 2000,
+                    allowOutsideClick: false
+                }).then(() => {
+                window.location.reload();
+            });
+            }, 300);
+        });
+    }
+
 });
 
 // Bayar & Tampilkan struk

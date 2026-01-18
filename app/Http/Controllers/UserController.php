@@ -47,7 +47,7 @@ class UserController extends Controller
             'status' => $request->status,
         ]);
 
-        return redirect()->route('admin.users.setting')->with('success', 'Pengguna berhasil ditambah!');
+        return redirect()->route('admin.setting')->with('success', 'Pengguna berhasil ditambah!');
 
     }
 
@@ -71,7 +71,7 @@ class UserController extends Controller
     }
 
     $user->update($data);
-    return redirect()->route('setting')->with('success', 'Pengguna berhasil diperbarui');
+    return redirect()->route('admin.setting')->with('success', 'Pengguna berhasil diperbarui');
     }
 
     public function destroy(User $user)

@@ -20,22 +20,19 @@
 
         <!-- Remember Me -->
         <div class="block mt-4">
-            <label for="remember_me" class="inline-flex items-center">
-                <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500"
-                    name="remember">
-                <span class="ms-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
-            </label>
+        <label class="flex items-center gap-2 text-gray/80">
+            <input id="remember_me" type="checkbox" class="rounded border-white/30 text-gray" name="remember">
+            <span>{{ __('Remember me') }}</span>
+        </label>
         </div>
 
         <!-- Forgot Password -->
         <div class="flex items-center justify-start mt-7 space-x-12">
-            @if (Route::has('password.request'))
-                <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md
-                        focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                    href="{{ route('password.request') }}">
-                    {{ __('Forgot your password?') }}
-                </a>
-            @endif
+        @if (Route::has('password.request'))
+            <a class="text-sm text-gray/80 hover:underline" href="{{ route('password.request') }}">
+                {{ __('Forgot your password?') }}
+            </a>
+        @endif
 
         <!-- Login & Register Buttons -->
         <div class="flex items-center justify-end mt-4 space-x-3">
@@ -44,10 +41,12 @@
             </x-primary-button>
 
             <a href="{{ route('register') }}"
-                class="inline-flex items-center px-4 py-2 bg-gray-200 border border-transparent rounded-md
-                       font-semibold text-xs text-gray-700 uppercase tracking-widest
-                       hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2
-                       focus:ring-indigo-500 transition ease-in-out duration-150">
+                class="inline-flex items-center justify-center px-4 py-3
+                    bg-white/20 text-red  rounded-full
+                    border border-white/40
+                    hover:bg-blue/30
+                    focus:outline-none focus:ring-2 focus:ring-blue focus:ring-offset-2
+                    transition">
                 {{ __('Register') }}
             </a>
         </div>

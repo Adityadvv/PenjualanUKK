@@ -12,23 +12,16 @@
                 {{-- Card Kategori --}}
                 <div class="card mb-3 p-3 shadow-sm">
                     <h5 class="mb-3">Menu Category</h5>
-<div class="d-flex flex-wrap">
-        <button class="btn btn-outline-primary btn-sm px-2 py-1 mr-2 mb-2 category-btn" data-category="">
-            Semua Menu
-        </button>
-                        @foreach ($categories as $category)
-            <button class="btn btn-outline-primary btn-sm px-2 py-1 mr-2 mb-2 category-btn"
-                    data-category="{{ $category }}">
-                {{ $category }}
-            </button>
-    @endforeach
-</div>
-
-
-
-
-
+                        <div class="d-flex flex-wrap">
+                            <button class="btn btn-outline-primary btn-sm px-2 py-1 mr-2 mb-2 category-btn" data-category="">Semua Menu</button>
+                            @foreach ($categories as $category)
+                            <button class="btn btn-outline-primary btn-sm px-2 py-1 mr-2 mb-2 category-btn"
+                            data-category="{{ $category }}">
+                        {{ $category }}
+                    </button>
+                    @endforeach
                 </div>
+            </div>
 
                 {{-- Card Produk --}}
                 <div class="card flex-grow-1 shadow-sm p-3" style="overflow-y: auto; scrollbar-width: none; -ms-overflow-style: none;">
@@ -80,9 +73,11 @@
 
                             {{-- Tipe Pesanan --}}
                             <div class="row g-2 mb-3 align-items-center">
-                                <div class="col-md-4"><label class="fw-semibold">Tipe Pesanan</label></div>
-                                <div class="col-md-8 d-flex gap-2">
-                                    <div class="form-check">
+                                <div class="col-md-4">
+                                    <label class="font-weight-bold">Tipe Pesanan</label>
+                                </div>
+                                <div class="col-md-8 d-flex">
+                                    <div class="form-check mr-4">
                                         <input class="form-check-input" type="radio" name="tipe_pesanan" id="dineIn" value="dine_in" required>
                                         <label class="form-check-label" for="dineIn">Dine In</label>
                                     </div>
@@ -108,9 +103,11 @@
                             </div>
                             {{-- Metode Pembayaran --}}
                             <div class="row g-2 mb-3 align-items-center">
-                                <div class="col-md-4"><label class="fw-semibold">Metode Pembayaran</label></div>
-                                <div class="col-md-8 d-flex gap-2">
-                                    <div class="form-check">
+                                <div class="col-md-4">
+                                    <label class="font-weight-bold">Metode Pembayaran</label>
+                                </div>
+                                <div class="col-md-8 d-flex">
+                                    <div class="form-check mr-4">
                                         <input class="form-check-input" type="radio" name="metode_pembayaran" id="cash" value="cash" required>
                                         <label class="form-check-label" for="cash">Cash</label>
                                     </div>
@@ -167,6 +164,7 @@
 @endsection
 
 @section('js')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
 
 //Filter Kategori produk
@@ -363,24 +361,35 @@ if(submitBtn){
         let alamat = customerForm.alamat.value.trim();
         let telepon = customerForm.no_telepon.value.trim();
 
-        if(nama === '' || alamat === '' || telepon === ''){
-            alert('Semua data pelanggan harus diisi!');
-            return;
-        }
+    if(nama === '' || alamat === '' || telepon === ''){
+    Swal.fire({
+        icon: 'warning',
+        title: 'Perhatian',
+        text: 'Semua data pelanggan harus diisi!'
+    });
+    return;
+    }
 
-        if(orderItems.length === 0){
-            alert('Belum ada menu yang dipesan!');
-            return;
-        }
+    if(orderItems.length === 0){
+    Swal.fire({
+        icon: 'warning',
+        title: 'Perhatian',
+        text: 'Belum ada menu yang dipesan!'
+    });
+    return;
+    }
 
-        // Cek metode pembayaran
-        let metode = customerForm.metode_pembayaran.value;
-        if(!metode){
-            alert('Pilih metode pembayaran!');
-            return;
-        }
+    // Cek metode pembayaran
+    if(!customerForm.metode_pembayaran.value){
+    Swal.fire({
+        icon: 'warning',
+        title: 'Perhatian',
+        text: 'Pilih metode pembayaran!'
+    });
+    return;
+    }
 
-        // Hapus input hidden lama kalau ada
+        // Hapus input hidden lama
         let existingHidden = document.getElementById('orderDataInput');
         if(existingHidden) existingHidden.remove();
 
@@ -392,10 +401,15 @@ if(submitBtn){
         hidden.value = JSON.stringify(orderItems);
         customerForm.appendChild(hidden);
 
-        customerForm.submit();
-
-        // Alert berhasil membuat order
-        alert('Order berhasil dibuat!');
+        Swal.fire({
+            icon: 'success',
+            title: 'Berhasil',
+            text: 'Pesanan berhasil diorder',
+            timer: 1500,
+            showConfirmButton: false
+        }).then(() => {
+            customerForm.submit(); 
+        });
     });
 }
 

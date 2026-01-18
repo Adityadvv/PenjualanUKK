@@ -4,8 +4,11 @@
 
 @section('content')
 <div class="container-fluid pt-3">
-    <h3>Monitoring Transaksi Barang</h3>
-    <hr>
+    <div class="card shadow-sm rounded">
+        <div class="card-body">
+            <div class="d-flex mb-3 justify-content-between align-items-center">
+                <h5 class="mb-0">📋 Monitoring Transaksi Barang</h5>
+            </div>
 
     <div class="card shadow-sm rounded">
         <div class="card-body">
@@ -17,7 +20,7 @@
                             <th>Nama Barang</th>
                             <th>Supplier</th>
                             <th>Harga / Kg</th>
-                            <th>Qty (Kg)</th>
+                            <th style="text-align: center;">Qty (Kg)</th>
                             <th>Total Pengeluaran</th>
                             <th style="text-align: center;" >Tanggal</th>
                         </tr>
@@ -29,10 +32,10 @@
                                 <td style="text-align: center;">{{ $i + 1 }}</td>
                                 <td>{{ $transaksi->barang->nama_barang }}</td>
                                 <td>{{ $transaksi->supplier->nama_supplier ?? '-' }}</td>
-                                <td>Rp{{ number_format($transaksi->harga_per_kg,0,',','.') }}</td>
-                                <td>{{ $transaksi->qty }} Kg</td>
+                                <td >Rp{{ number_format($transaksi->harga_per_kg,0,',','.') }}</td>
+                                <td style="text-align: center;">{{ $transaksi->qty }} Kg</td>
                                 <td>Rp{{ number_format($transaksi->total_harga,0,',','.') }}</td>
-                                <td>{{ $transaksi->created_at->format('d M Y H:i') }}</td>
+                                <td style="text-align: center;">{{ $transaksi->created_at->format('d M Y H:i') }}</td>
                             </tr>
                             @php
                             $grandTotal = $transaksis->where('tipe_transaksi', 'masuk')->sum('total_harga');
@@ -57,5 +60,7 @@
             </div>
         </div>
     </div>
+</div>
+</div>
 </div>
 @endsection

@@ -4,8 +4,11 @@
 
 @section('content')
 <div class="container-fluid pt-3">
-    <h3>Data Pelanggan</h3>
-    <hr>
+    <div class="card shadow-sm rounded">
+        <div class="card-body">
+            <div class="d-flex mb-3 justify-content-between align-items-center">
+                <h5 class="mb-0">📋 Data Pelanggan</h5>
+            </div>
 
     <div class="card shadow-sm rounded">
         <div class="card-body">
@@ -35,5 +38,7 @@
             </table>
         </div>
     </div>
+    </div>
+</div>
 </div>
 @endsection

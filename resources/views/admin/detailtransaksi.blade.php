@@ -8,9 +8,15 @@
         <div class="card-body">
             <div class="d-flex mb-3 justify-content-between align-items-center">
                 <h5 class="mb-0">📋 Detail Transaksi</h5>
-                <input type="text" id="searchInput" class="form-control" placeholder="Cari kode penjualan, pelanggan atau produk..." style="max-width: 300px;">
+                
             </div>
 
+        <div class="card shadow-sm rounded">
+        <div class="card-body">
+                    <div class="d-flex justify-content-end align-items-center mb-3" style="gap: 10px;">
+                <label for="searchInput" class="mb-0" style="white-space: nowrap;">Cari Transaksi:</label>
+                <input type="text" id="searchInput" class="form-control" placeholder="Masukkan id transaksi..." style="max-width: 300px;">
+            </div>
             <table class="table table-bordered table-striped" id="detailTransaksiTable">
                 <thead class="table-primary">
                     <tr>
@@ -44,6 +50,8 @@
 
         </div>
     </div>
+</div>
+</div>
 </div>
 @endsection
 

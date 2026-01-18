@@ -3,30 +3,25 @@
 @section('title', 'Manajemen Pengguna')
 
 @section('content')
-<div class="container-fluid">
-    <h3 class="mb-3">Manajemen Pengguna</h3>
-
-        @if(session('success'))
-            <div id="success-alert" class="alert alert-success alert-dismissible fade show" role="alert">
-                {{ session('success') }}
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-        @endif
-    
-    <!-- Table User -->
+<div class="container-fluid pt-3">
     <div class="card shadow-sm rounded">
-      <div class="card-body">
-        <div class="d-flex mb-3 justify-content-between">
-        <!-- Tombol Tambah -->
-        <button class="btn btn-success" data-toggle="modal" data-target="#createUserModal"> + Tambah User</button>
+        <div class="card-body">
+            <div class="d-flex mb-3 justify-content-between align-items-center">
+                <h5 class="mb-0">📋 Manajemen Pengguna</h5>
+            </div>
 
-          <!-- Input Search Bar -->
-        <input type="text" id="searchInput" class="form-control" placeholder="Cari nama atau email..." style="max-width: 300px;">
-        </div>
+            <!-- Tabel Pengguna --> 
+            <div class="card shadow-sm rounded">
+            <div class="card-body">
+              <div class="mb-3 d-flex justify-content-between align-items-end">
+              <button class="btn btn-success" data-toggle="modal" data-target="#createUserModal"> + Tambah User</button>
 
-            <!-- Tabel Pengguna -->
+              <div class="d-flex justify-content-end align-items-center" style="gap: 10px;">
+              <label for="searchInput" class="mb-0" style="white-space: nowrap;">Cari User:</label>
+              <input type="text" id="searchInput" class="form-control" placeholder="Masukkan nama user..." style="max-width: 300px;">
+            </div>
+            </div>
+
             <table class="table table-bordered" id="userTable">
             <thead class="table-primary">
             <tr>
@@ -47,26 +42,21 @@
                 <td style="text-align: center;">{{ ucfirst($user->role) }}</td>
                 <td style="text-align: center;">{{ ucfirst($user->status) }}</td>
                 <td class="text-center">
-                   
-                    <!-- Tombol Edit -->
-                    <button class="btn btn-sm btn-warning" data-toggle="modal" data-target="#editUserModal{{ $user->id }}">Edit</button>
-
-                     <!-- Tombol Detail -->
+                    <button class="btn btn-sm btn-warning" data-toggle="modal" style="color: white;"data-target="#editUserModal{{ $user->id }}">Edit</button>
                     <button class="btn btn-sm btn-info" data-toggle="modal" data-target="#detailUserModal{{ $user->id }}">Detail</button>
-                    
-                    <!-- Tombol Hapus -->
                     <form action="{{ route('users.destroy', $user) }}" method="POST" style="display:inline-block;">
                         @csrf
                         @method('DELETE')
-                        <button class="btn btn-sm btn-danger" onclick="return confirm('Hapus pengguna ini?')">Hapus</button>
+                        <button type="button" class="btn btn-sm btn-danger deleteBtn">Hapus</button>
                     </form>
                 </td>
              </tr> 
+
              <!-- Modal Detail -->
             <div class="modal fade" id="detailUserModal{{ $user->id }}" tabindex="-1">
              <div class="modal-dialog">
                 <div class="modal-content">
-                 <div class="modal-header">
+                 <div class="modal-header bg-info text-white">
                     <h5 class="modal-title">Detail Pengguna</h5>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
@@ -81,19 +71,19 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
                 </div>
-                </div>
+              </div>
             </div>
-            </div>
+          </div>
 
             <!-- Modal Edit -->
             <div class="modal fade" id="editUserModal{{ $user->id }}" tabindex="-1">
               <div class="modal-dialog">
-                <form action="{{ route('users.update', $user) }}" method="POST">
+                <form id="editUserForm{{ $user->id }}" action="{{ route('users.update', $user) }}" method="POST">
                   @csrf
                   @method('PUT')
                   <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title">Edit Pengguna</h5>
+                    <div class="modal-header bg-warning">
+                      <h5 class="modal-title text-white">Edit Pengguna</h5>
                       <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
                     <div class="modal-body">
@@ -125,7 +115,7 @@
                       </div>
                     </div>
                     <div class="modal-footer">
-                      <button type="submit" class="btn btn-primary">Update</button>
+                      <button type="button" class="btn btn-info updateUserBtn" data-id="{{ $user->id }}">Update</button>
                       <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
                     </div>
                   </div>
@@ -139,35 +129,35 @@
     <!-- Modal Tambah -->
     <div class="modal fade" id="createUserModal" tabindex="-1">
       <div class="modal-dialog">
-        <form action="{{ route('users.store') }}" method="POST">
+        <form id="userForm" action="{{ route('users.store') }}" method="POST">
           @csrf
           <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header bg-success text-white">
               <h5 class="modal-title">Tambah Pengguna</h5>
               <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
               <div class="form-group">
-                <label>Nama</label>
+                <label>Nama<span class="text-danger">*</span></label>
                 <input type="text" name="name" class="form-control" required>
               </div>
               <div class="form-group">
-                <label>Email</label>
+                <label>Email<span class="text-danger">*</span></label>
                 <input type="email" name="email" class="form-control" required>
               </div>
               <div class="form-group">
-                <label>Password</label>
+                <label>Password<span class="text-danger">*</span></label>
                 <input type="password" name="password" class="form-control" required>
               </div>
               <div class="form-group">
-                <label>Role</label>
+                <label>Role<span class="text-danger">*</span></label>
                 <select name="role" class="form-control" required>
                   <option value="admin">Admin</option>
                   <option value="karyawan">Karyawan</option>
                 </select>
               </div>
               <div class="form-group">
-                <label>Status</label>
+                <label>Status<span class="text-danger">*</span></label>
                 <select name="status" class="form-control" required>
                   <option value="aktif">Aktif</option>
                   <option value="nonaktif">Nonaktif</option>
@@ -175,7 +165,7 @@
               </div>
             </div>
             <div class="modal-footer">
-              <button type="submit" class="btn btn-success">Simpan</button>
+              <button type="button" id="submitUserBtn" class="btn btn-success">Simpan</button>
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
             </div>
           </div>
@@ -185,21 +175,128 @@
 </div>
 </div>
 </div>
+</div>
+</div>
 @endsection
 
 @section('js')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-<!-- Alert -->
 <script>
+//add user
+document.getElementById('submitUserBtn').addEventListener('click', function () {
+    var form = document.getElementById('userForm');
+
+    // cek validasi
+    if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+    }
+
+    // tutup modal 
+        $(this).closest('.modal').modal('hide');
+
+    // konfirmasi alert
+    Swal.fire({
+        title: 'Konfirmasi',
+        text: 'Apakah Anda yakin ingin menyimpan user ini?',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: 'Simpan',
+        cancelButtonText: 'Batal',
+        confirmButtonColor: '#28a745',
+        cancelButtonColor: '#d33'
+    }).then((result) => {
+        if (!result.isConfirmed) return;
+
+        // success alert
+        Swal.fire({
+            icon: 'success',
+            title: 'Berhasil',
+            text: 'User berhasil ditambahkan',
+            timer: 1500,
+            showConfirmButton: false
+        }).then(() => {
+            form.submit(); // submit form setelah sweatalert
+        });
+    });
+});
+
+// Edit
+$(document).on('click', '.updateUserBtn', function(){
+    let id = $(this).data('id');
+    let form = document.getElementById('editUserForm' + id);
+
+    if(!form.checkValidity()){ 
+        form.reportValidity(); 
+        return; 
+    }
+        $(form).closest('.modal').modal('hide');
+
+    Swal.fire({
+        title: 'Konfirmasi',
+        text: 'Apakah Anda yakin ingin mengubah data user ini?',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: 'Update',
+        cancelButtonText: 'Batal'
+    }).then((result)=>{
+        if(!result.isConfirmed) return;
+
+        // Tampilkan alert sukses
+        Swal.fire({
+            icon: 'success',
+            title: 'Berhasil',
+            text: 'Data berhasil diupdate',
+            timer: 1200,
+            showConfirmButton: false
+        }).then(()=>{ 
+            form.submit(); 
+        });
+    });
+});
+
+// Hapus
+$(document).on('click', '.deleteBtn', function (e) {
+    e.preventDefault(); 
+    let form = $(this).closest('form');
+
+    Swal.fire({
+        title: 'Hapus Data User?',
+        text: 'Data yang dihapus tidak bisa dikembalikan!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Ya, Hapus',
+        cancelButtonText: 'Batal',
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#6c757d'
+
+    }).then((result) => {
+
+        // batal - stop
+        if (!result.isConfirmed) return;
+
+        // ya - success
+        Swal.fire({
+            icon: 'success',
+            title: 'Berhasil',
+            text: 'Data berhasil dihapus',
+            timer: 1200,
+            showConfirmButton: false
+        }).then(() => {
+            form.submit(); //submit after success
+        });
+    });
+ });
+
+//alert
 $(document).ready(function() {
     $("#success-alert").delay(3000).slideUp(500, function(){
         $(this).alert('close');
     });
 });
-</script>
 
-<!-- Search -->
-<script>
+//search
 $(document).ready(function() {
     $("#success-alert").delay(3000).slideUp(500, function(){
         $(this).alert('close');
