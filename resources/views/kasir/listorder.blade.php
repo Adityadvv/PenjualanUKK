@@ -55,7 +55,7 @@
         <div class="modal-content">
             <form onsubmit="return bayarDanTampilStruk(this, {{ $order->penjualan_id }})" method="POST" action="{{ route('kasir.listorder.bayar', $order->penjualan_id) }}">
                 @csrf
-                <div class="modal-header">
+                <div class="modal-header bg-info">
                     <h5 class="modal-title">Bayar Order - {{ $order->pelanggan->namapelanggan }}</h5>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
