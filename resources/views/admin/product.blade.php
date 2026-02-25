@@ -152,12 +152,6 @@
         </tbody>
     </table>
 
-    {{-- Pagination --}}
-    <div class="mt-3">{{ $products->links() }}</div>
-</div>
-    </div>
-</div>
-
 {{-- Modal Create Produk --}}
 <div class="modal fade" id="createProductModal" tabindex="-1">
     <div class="modal-dialog">
