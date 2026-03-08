@@ -13,6 +13,7 @@
     {{-- Tabel Meja --}}
     <div class="card shadow-sm rounded">
     <div class="card-body">
+    <div style="max-height:515px; overflow-y:auto;">
     <div class="d-flex justify-content-between mb-2">
 
     <form id="mejaForm" action="{{ route('kasir.daftarmeja.store') }}" method="POST">
@@ -52,6 +53,7 @@
                 </tbody>
             </table>
         </div>
+    </div>
     </div>
 </div>
 </div>

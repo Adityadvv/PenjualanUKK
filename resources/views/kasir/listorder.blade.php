@@ -12,6 +12,7 @@
 
     <div class="card shadow-sm rounded">
         <div class="card-body">
+            <div style="max-height:515px; overflow-y:auto;">
             <table class="table table-bordered table-striped">
                 <thead class="table-primary">
                     <tr>
@@ -142,6 +143,7 @@
             </form>
         </div>
     </div>
+</div>
 </div>
 @endforeach
 

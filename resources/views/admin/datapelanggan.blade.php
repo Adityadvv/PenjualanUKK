@@ -12,6 +12,7 @@
 
     <div class="card shadow-sm rounded">
         <div class="card-body">
+            <div style="max-height:515px; overflow-y:auto;">
             <table class="table table-bordered table-striped table-hover">
                 <thead class="table-primary text-center">
                     <tr>
@@ -37,6 +38,7 @@
                 </tbody>
             </table>
         </div>
+    </div>
     </div>
     </div>
 </div>

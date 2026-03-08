@@ -17,8 +17,8 @@
                 <button type="button" class="btn btn-success" data-toggle="modal" data-target="#createProductModal">
                     + Tambah Produk
                 </button>
-                
             </div>
+
         <div class="mb-3 d-flex justify-content-between align-items-end">
             <div class="mb-3 d-flex align-items-center" style="gap: 10px;">
                 <label for="categoryFilter" class="mb-0" style="white-space: nowrap;">Kategori Produk:</label>
@@ -30,6 +30,7 @@
                     <option value="Snack">Snack</option>
                 </select>
             </div>
+
             <div class="mb-3 d-flex align-items-center" style="gap: 10px;">
                 <label for="searchInput" class="mb-0" style="white-space: nowrap;">Cari Produk:</label>
                 <input type="text" id="searchInput" class="form-control" placeholder="Masukkan nama produk..." style="max-width: 300px;">
@@ -37,6 +38,7 @@
         </div>
 
             {{-- Tabel produk --}}
+            <div style="max-height:460px; overflow-y:auto;">
             <table class="table table-bordered table-striped table-hover" id="productTable">
                 <thead class="table-primary text-center">
                     <tr>
@@ -143,6 +145,7 @@
                              </div>
                          </form>
                      </div>
+                     </div>
                  </div>
                  @empty
                 <tr>
@@ -197,6 +200,7 @@
             </div>
         </form>
     </div>
+</div>
 </div>
 </div>
 </div>

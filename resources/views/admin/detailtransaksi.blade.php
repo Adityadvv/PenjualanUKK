@@ -17,6 +17,8 @@
                 <label for="searchInput" class="mb-0" style="white-space: nowrap;">Cari Transaksi:</label>
                 <input type="text" id="searchInput" class="form-control" placeholder="Masukkan id transaksi..." style="max-width: 300px;">
             </div>
+
+            <div style="max-height:460px; overflow-y:auto;">
             <table class="table table-bordered table-striped" id="detailTransaksiTable">
                 <thead class="table-primary">
                     <tr>
@@ -46,8 +48,9 @@
                     </tr>
                     @endforelse
                 </tbody>
-            </table>
+                </table>
 
+            </div>
         </div>
     </div>
 </div>

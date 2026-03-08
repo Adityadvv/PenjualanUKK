@@ -48,19 +48,19 @@
                 <ul class="nav nav-pills nav-sidebar flex-column">
                     <li class="nav-item">
                         <a href="{{ route('kasir.dashboard') }}" class="nav-link {{ request()->routeIs('kasir.dashboard') ? 'active' : '' }}">
-                            <i class="nav-icon fas fa-tachometer-alt"></i>
+                            <i class="nav-icon fas fa-shopping-cart"></i>
                             <p>Dashboard Menu</p>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="{{ route('kasir.listorder') }}" class="nav-link {{ request()->routeIs('kasir.listorder') ? 'active' : '' }}">
-                            <i class="nav-icon fas fa-tachometer-alt"></i>
+                            <i class="nav-icon fas fa-clipboard-list"></i>
                             <p>List Order</p>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="{{ route('kasir.daftarmeja.index') }}" class="nav-link {{ request()->routeIs('kasir.daftarmeja.index') ? 'active' : '' }}">
-                            <i class="nav-icon fas fa-tachometer-alt"></i>
+                            <i class="nav-icon fas fa-chair"></i>
                             <p>Daftar Meja</p>
                         </a>
                     </li>

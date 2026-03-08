@@ -48,25 +48,25 @@
                 <ul class="nav nav-pills nav-sidebar flex-column">
                     <li class="nav-item">
                         <a href="{{ route('admin.dashboard') }}" class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
-                            <i class="nav-icon fas fa-tachometer-alt"></i>
-                            <p>Dashboard</p>
+                        <i class="nav-icon fas fa-chart-line"></i>
+                        <p>Dashboard</p>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="{{ route('admin.detailtransaksi') }}" class="nav-link {{ request()->routeIs('admin.detailtransaksi') ? 'active' : '' }}">
-                            <i class="nav-icon fas fa-tachometer-alt"></i>
+                            <i class="nav-icon fas fa-file-invoice"></i>
                             <p>Detail Transaksi</p>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="{{ route('admin.datapelanggan') }}" class="nav-link {{ request()->routeIs('admin.datapelanggan') ? 'active' : '' }}">
-                            <i class="nav-icon fas fa-tachometer-alt"></i>
+                            <i class="nav-icon fas fa-users"></i>
                             <p>Data Pelanggan</p>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="{{ route('product.index') }}" class="nav-link {{ request()->routeIs('product.index') ? 'active' : '' }}">
-                            <i class="nav-icon fas fa-tachometer-alt"></i>
+                            <i class="nav-icon fas fa-box"></i>
                             <p>Manage Produk</p>
                         </a>
                     </li>
@@ -96,7 +96,7 @@
 
                     <li class="nav-item">
                         <a href="{{ route('admin.setting') }}" class="nav-link {{ request()->routeIs('admin.setting') ? 'active' : '' }}">
-                            <i class="nav-icon fas fa-tachometer-alt"></i>
+                            <i class="nav-icon fas fa-user-cog"></i>
                             <p>User Management</p>
                         </a>
                     </li>
